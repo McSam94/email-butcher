@@ -1,0 +1,6 @@
+{
+	"*.{js,md}": [
+		"yarn eslint",
+		"yarn format"
+	]
+}
