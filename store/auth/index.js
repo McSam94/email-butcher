@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { getInitialState } from '@/utilities/local-storage'
 import useReducerContext from '@/hooks/useReducerContext'
-import { setAccessToken, setState } from './actions'
+import { login, logout, finishLogin, setState } from './actions'
 import { AuthReducer } from './reducer'
 import * as React from 'react'
 
@@ -12,11 +12,15 @@ export const { Context: AuthContext, Provider: AuthProvider } =
 	useReducerContext({
 		reducer: AuthReducer,
 		actions: {
-			setAccessToken,
+			login,
+			logout,
 			setState,
+			finishLogin,
 		},
 		initialState: {
 			token: null,
+			isLoggedIn: false,
+			justLoggedIn: false,
 		},
 		displayName: STORE_NAME,
 		shouldPersist: true,
@@ -27,5 +31,9 @@ export const initAuthState = () => {
 
 	React.useEffect(() => {
 		setState(getInitialState(STORE_NAME))
-	}, [setState])
+	}, []) // eslint-disable-line react-hooks/exhaustive-deps
+}
+
+export const useAuthStore = () => {
+	return React.useContext(AuthContext)
 }

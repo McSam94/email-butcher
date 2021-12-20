@@ -1,8 +1,13 @@
 import * as React from 'react'
 import { AuthProvider } from '@/store/auth'
+import { UiProvider } from '@/store/ui'
 
 const Providers = ({ children }) => {
-	return <AuthProvider>{children}</AuthProvider>
+	return (
+		<UiProvider>
+			<AuthProvider>{children}</AuthProvider>
+		</UiProvider>
+	)
 }
 
 export default Providers

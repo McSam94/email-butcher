@@ -1,40 +1,62 @@
 import * as React from 'react'
 import { Box, List, ListItem, ListItemIcon, ListItemText } from '@mui/material'
+import LoadingButton from '@mui/lab/LoadingButton'
 import LoginIcon from '@mui/icons-material/Login'
+import LogoutIcon from '@mui/icons-material/Logout'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import capitalize from 'lodash/capitalize'
 import { getMenuIcon } from '@/utilities/menu'
+import Toast from '@/components/toast'
 import MENU from '@/constants/menu'
+import TOAST from '@/constants/toast'
 import Config from '@/constants/config'
-import Link from 'next/link'
-import { login } from '@/services/auth'
-import { AuthContext, initAuthState } from '@/store/auth'
-import { useRouter } from 'next/router'
+import AuthSrv from '@/services/auth'
+import { useAuthStore, initAuthState } from '@/store/auth'
+import { useUiStore, initUiState } from '@/store/ui'
 
 const Layout = ({ children }) => {
 	const { push } = useRouter()
-	const { setAccessToken, token } = React.useContext(AuthContext)
+	const { login, logout, isLoggedIn, justLoggedIn, finishLogin } =
+		useAuthStore()
+	const { toast } = useUiStore()
+
+	const [isLoggingIn, setIsLoggingIn] = React.useState(false)
 
 	initAuthState()
+	initUiState()
 
 	const onLogin = React.useCallback(async () => {
+		setIsLoggingIn(true)
 		const {
 			data: { url },
-		} = await login()
+		} = await AuthSrv.login()
 
 		push(url)
 	}, [push])
 
+	const onLogout = React.useCallback(() => {
+		logout()
+	}, [logout])
+
 	React.useEffect(() => {
+		if (isLoggedIn) return
+
 		const params = window.location.hash.substring(1)
 		const token = new URLSearchParams(params).get('access_token')
 
-		if (!token) {
-			return
-		}
+		if (!token) return
 
-		setAccessToken(token)
+		login(token)
 		push('/')
-	}, [push, setAccessToken])
+	}, [push, login, isLoggedIn])
+
+	React.useEffect(() => {
+		if (justLoggedIn) {
+			toast('Success Login', TOAST.SUCCESS)
+			finishLogin()
+		}
+	}, [justLoggedIn, finishLogin, push, toast])
 
 	return (
 		<>
@@ -57,17 +79,32 @@ const Layout = ({ children }) => {
 							</ListItem>
 						</Link>
 					))}
-					{!token && (
-						<ListItem button onClick={onLogin}>
+					{!isLoggedIn && (
+						<ListItem>
+							<LoadingButton
+								disableRipple
+								loading={isLoggingIn}
+								loadingPosition="start"
+								startIcon={<LoginIcon />}
+								variant="outlined"
+								onClick={onLogin}
+							>
+								Login
+							</LoadingButton>
+						</ListItem>
+					)}
+					{isLoggedIn && (
+						<ListItem button onClick={onLogout}>
 							<ListItemIcon>
-								<LoginIcon />
+								<LogoutIcon />
 							</ListItemIcon>
-							<ListItemText>Login</ListItemText>
+							<ListItemText>Logout</ListItemText>
 						</ListItem>
 					)}
 				</List>
 			</Box>
 			<main>{children}</main>
+			<Toast />
 		</>
 	)
 }

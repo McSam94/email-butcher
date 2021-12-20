@@ -2,11 +2,11 @@ import * as React from 'react'
 import { Box } from '@mui/material'
 import Head from 'next/head'
 import Image from 'next/image'
-import { AuthContext } from '@/store/auth'
+import { useAuthStore } from '@/store/auth'
 import CONFIG from '@/constants/config'
 
 const Main = () => {
-	const { token } = React.useContext(AuthContext)
+	const { token } = useAuthStore()
 
 	return (
 		<Box
@@ -27,7 +27,7 @@ const Main = () => {
 				component="main"
 				sx={{ flexGrow: 1, width: `calc(100% - ${CONFIG.DRAWER_WIDTH}px)` }}
 			>
-				LoggedIn as: {token}
+				<p style={{ overflowWrap: 'break-word' }}>LoggedIn as: {token}</p>
 			</Box>
 
 			<Box
