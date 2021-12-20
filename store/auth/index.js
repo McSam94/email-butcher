@@ -26,10 +26,6 @@ export const initAuthState = () => {
 	const { setState } = React.useContext(AuthContext)
 
 	React.useEffect(() => {
-		console.log(
-			'🚀 ~ file: index.js ~ line 30 ~ React.useEffect ~ getInitialState(STORE_NAME)',
-			getInitialState(STORE_NAME)
-		)
 		setState(getInitialState(STORE_NAME))
 	}, [setState])
 }

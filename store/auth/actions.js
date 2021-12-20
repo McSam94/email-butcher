@@ -9,7 +9,6 @@ export const authAction = Object.freeze({
 export const setState = dispatch => {
 	return useCallback(
 		state => {
-			console.log('🚀 ~ file: actions.js ~ line 12 ~ state', state)
 			dispatch({ type: authAction.SET_STATE, payload: { state } })
 		},
 		[dispatch]

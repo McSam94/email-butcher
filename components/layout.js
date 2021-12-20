@@ -25,13 +25,14 @@ const Layout = ({ children }) => {
 	}, [push])
 
 	React.useEffect(() => {
-		const accessToken = window.location.hash.substring(14)
+		const params = window.location.hash.substring(1)
+		const token = new URLSearchParams(params).get('access_token')
 
-		if (!accessToken) {
+		if (!token) {
 			return
 		}
 
-		setAccessToken(accessToken)
+		setAccessToken(token)
 		push('/')
 	}, [push, setAccessToken])
 

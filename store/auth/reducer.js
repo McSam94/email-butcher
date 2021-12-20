@@ -8,7 +8,6 @@ export const AuthReducer = (state, action) => {
 				token: action?.payload?.token,
 			}
 		case authAction.SET_STATE: {
-			console.log(action)
 			return {
 				...action?.payload?.state,
 			}
