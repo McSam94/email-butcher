@@ -12,7 +12,7 @@ import { useRouter } from 'next/router'
 
 const Layout = ({ children }) => {
 	const { push } = useRouter()
-	const { setAccessToken } = React.useContext(AuthContext)
+	const { setAccessToken, token } = React.useContext(AuthContext)
 
 	initAuthState()
 
@@ -56,12 +56,14 @@ const Layout = ({ children }) => {
 							</ListItem>
 						</Link>
 					))}
-					<ListItem button onClick={onLogin}>
-						<ListItemIcon>
-							<LoginIcon />
-						</ListItemIcon>
-						<ListItemText>Login</ListItemText>
-					</ListItem>
+					{!token && (
+						<ListItem button onClick={onLogin}>
+							<ListItemIcon>
+								<LoginIcon />
+							</ListItemIcon>
+							<ListItemText>Login</ListItemText>
+						</ListItem>
+					)}
 				</List>
 			</Box>
 			<main>{children}</main>
