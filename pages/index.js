@@ -111,7 +111,7 @@ const Main = () => {
 			>
 				<Box>
 					<Logo size="l" />
-					<Typography variant="h6" sx={{ color: 'text.secondary' }}>
+					<Typography variant="h6" sx={{ color: 'primary.light' }}>
 						Sit veniam esse esse culpa qui cillum sunt dolore.
 					</Typography>
 				</Box>
