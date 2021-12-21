@@ -23,6 +23,10 @@ export const { Context: AuthContext, Provider: AuthProvider } =
 			isLoggedIn: false,
 			justLoggedIn: false,
 
+			isLoggingOut: false,
+			hasLoggedOut: false,
+			logoutError: null,
+
 			isGettingProfile: false,
 			hasGotProfile: false,
 			profile: {},

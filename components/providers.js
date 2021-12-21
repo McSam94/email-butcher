@@ -1,11 +1,14 @@
 import * as React from 'react'
 import { AuthProvider } from '@/store/auth'
 import { UiProvider } from '@/store/ui'
+import { JobProvider } from '@/store/job'
 
 const Providers = ({ children }) => {
 	return (
 		<UiProvider>
-			<AuthProvider>{children}</AuthProvider>
+			<AuthProvider>
+				<JobProvider>{children}</JobProvider>
+			</AuthProvider>
 		</UiProvider>
 	)
 }

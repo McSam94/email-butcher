@@ -6,15 +6,17 @@ import { useAuthStore, initAuthState } from '@/store/auth'
 import { useUiStore, initUiState } from '@/store/ui'
 import Header from '@/components/header'
 import { Box } from '@mui/material'
+import ApiUtil from '@/services/index'
 
 const Layout = ({ children }) => {
 	const { push } = useRouter()
-	const { login, isLoggedIn, justLoggedIn, finishLogin, getProfile } =
+	const { token, login, isLoggedIn, justLoggedIn, finishLogin, getProfile } =
 		useAuthStore()
 	const { toast } = useUiStore()
 
 	initAuthState()
 	initUiState()
+	ApiUtil.injectToken(token)
 
 	React.useEffect(() => {
 		if (isLoggedIn) return

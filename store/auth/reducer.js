@@ -19,12 +19,33 @@ export const AuthReducer = (state, action) => {
 				...state,
 				justLoggedIn: false,
 			}
-		case authAction.LOGOUT:
+		case authAction.LOGOUT.REQUEST:
 			return {
 				...state,
+				isLoggingOut: true,
+			}
+		case authAction.LOGOUT.SUCCESS:
+			return {
+				...state,
+				isLoggingOut: false,
 				isLoggedIn: false,
 				justLoggedIn: false,
+				hasLoggedOut: true,
 				token: null,
+			}
+		case authAction.LOGOUT.FAIL:
+			return {
+				...state,
+				isLoggingOut: false,
+				hasLoggedOut: false,
+				logoutError: action?.payload?.error,
+			}
+		case authAction.LOGOUT.RESET:
+			return {
+				...state,
+				isLoggingOut: false,
+				hasLoggedOut: false,
+				logoutError: null,
 			}
 		case authAction.PROFILE.REQUEST:
 			return {

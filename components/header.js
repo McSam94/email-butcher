@@ -51,21 +51,21 @@ const Header = () => {
 						</ListItem>
 					</Link>
 				))}
-				{!isLoggedIn && (
-					<ListItem>
-						<LoadingButton
-							disableRipple
-							loading={isLoggingIn}
-							loadingPosition="start"
-							startIcon={<LoginIcon />}
-							variant="outlined"
-							onClick={onLogin}
-						>
-							Login
-						</LoadingButton>
-					</ListItem>
-				)}
 			</List>
+			{!isLoggedIn && (
+				<Box>
+					<LoadingButton
+						disableRipple
+						loading={isLoggingIn}
+						loadingPosition="start"
+						startIcon={<LoginIcon />}
+						variant="outlined"
+						onClick={onLogin}
+					>
+						Login
+					</LoadingButton>
+				</Box>
+			)}
 			{isLoggedIn && (
 				<Box>
 					<Profile />

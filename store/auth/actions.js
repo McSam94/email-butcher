@@ -1,13 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import * as React from 'react'
-import ApiUtil from '@/services/index'
 import AuthSrv from '@/services/auth'
 import { generateRequestActions } from '@/utilities/request'
 
 export const authAction = Object.freeze({
 	SET_STATE: 'setState',
 	LOGIN: 'login',
-	LOGOUT: 'logout',
+	LOGOUT: generateRequestActions('logout'),
 	FINISH_LOGIN: 'finishLogin',
 	PROFILE: generateRequestActions('profile'),
 })
@@ -22,15 +21,24 @@ export const login = dispatch =>
 	React.useCallback(
 		token => {
 			dispatch({ type: authAction.LOGIN, payload: { token } })
-			ApiUtil.injectToken(token)
 		},
 		[dispatch]
 	)
 
 export const logout = dispatch =>
-	React.useCallback(() => {
-		dispatch({ type: authAction.LOGOUT })
-		dispatch({ type: authAction.PROFILE.RESET })
+	React.useCallback(async () => {
+		dispatch({ type: authAction.LOGOUT.REQUEST })
+
+		try {
+			const { success, error } = await AuthSrv.logout()
+
+			if (success) {
+				dispatch({ type: authAction.LOGOUT.SUCCESS })
+				dispatch({ type: authAction.PROFILE.RESET })
+			} else throw new Error(error)
+		} catch (error) {
+			dispatch({ type: authAction.LOGOUT.FAIL, payload: { error } })
+		}
 	}, [dispatch])
 
 export const finishLogin = dispatch =>
