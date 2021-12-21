@@ -17,3 +17,10 @@ export const generateToggleActions = base => ({
 	[ON]: `${base}_${ON}`,
 	[OFF]: `${base}_${OFF}`,
 })
+
+export const convertObjToParams = obj => {
+	return `?${Object.entries(obj).reduce(
+		(accRes, [key, value]) => `${accRes}${accRes ? '&' : ''}${key}=${value}`,
+		''
+	)}`
+}

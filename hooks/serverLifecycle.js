@@ -1,7 +1,7 @@
-import axios from 'axios'
+import ApiUtil from '@/services/index'
 
-export const preFetchData = async url => {
-	const res = await axios.get(url)
+export const preFetchData = async (url, propName) => {
+	const res = await ApiUtil.get(url)
 
 	if (res?.status !== 200) {
 		return {
@@ -10,6 +10,6 @@ export const preFetchData = async url => {
 	}
 
 	return {
-		props: { posts: res?.data },
+		props: { [propName]: res?.data },
 	}
 }

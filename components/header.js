@@ -38,7 +38,7 @@ const Header = () => {
 				width: '100%',
 				justifyContent: 'space-between',
 				alignItems: 'center',
-				bgcolor: 'grey.100',
+				bgcolor: 'grey.200',
 				height: Config.HEADER_HEIGHT,
 			}}
 		>

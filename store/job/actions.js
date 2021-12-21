@@ -8,6 +8,7 @@ export const jobActions = Object.freeze({
 	INSTANT_JOB: generateRequestActions('instantJob'),
 	CREATE_JOB: generateRequestActions('createJob'),
 	RUN_JOB: generateRequestActions('runJob'),
+	GET_JOBS: generateRequestActions('getJobs'),
 })
 
 export const setState = dispatch =>
@@ -88,5 +89,26 @@ export const createJob = dispatch =>
 export const resetCreateJob = dispatch =>
 	React.useCallback(
 		() => dispatch({ type: jobActions.CREATE_JOB.RESET }),
+		[dispatch]
+	)
+
+export const getJobs = dispatch =>
+	React.useCallback(
+		async params => {
+			dispatch({ type: jobActions.GET_JOBS.REQUEST })
+
+			try {
+				const { success, data, error } = await JobSrv.getJobs(params)
+
+				if (success)
+					dispatch({
+						type: jobActions.GET_JOBS.SUCCESS,
+						payload: { jobs: data },
+					})
+				else throw new Error(error)
+			} catch (error) {
+				dispatch({ type: jobActions.GET_JOBS.FAIL, payload: { error } })
+			}
+		},
 		[dispatch]
 	)

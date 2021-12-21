@@ -1,7 +1,7 @@
 export default Object.freeze({
 	SCHEDULE: {
-		label: 'Jobs',
-		link: '/jobs',
+		label: 'Schedule',
+		link: '/schedule',
 	},
 	SETTINGS: {
 		label: 'Settings',

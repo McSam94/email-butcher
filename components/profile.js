@@ -3,6 +3,7 @@ import {
 	Avatar,
 	Box,
 	IconButton,
+	ListItem,
 	Menu,
 	Skeleton,
 	Tooltip,
@@ -48,7 +49,9 @@ const Profile = () => {
 	return (
 		<>
 			{!isProfileReady && (
-				<Skeleton variant="circular" width={40} height={40} />
+				<ListItem>
+					<Skeleton variant="circular" width={40} height={40} />
+				</ListItem>
 			)}
 			{isProfileReady && (
 				<>

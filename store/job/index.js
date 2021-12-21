@@ -7,6 +7,7 @@ import {
 	instantJob,
 	resetCreateJob,
 	resetInstantJob,
+	getJobs,
 } from './actions'
 import { JobReducer } from './reducer'
 
@@ -21,6 +22,7 @@ export const { Context: JobContext, Provider: JobProvider } =
 			resetInstantJob,
 			createJob,
 			resetCreateJob,
+			getJobs,
 		},
 		initialState: {
 			isCreatingJob: false,
@@ -37,6 +39,11 @@ export const { Context: JobContext, Provider: JobProvider } =
 			hasInstantJob: false,
 			instantJob: null,
 			instantJobError: null,
+
+			isGettingJobs: false,
+			hasGotJobs: false,
+			jobs: null,
+			getJobsError: null,
 		},
 		displayName: STORE_NAME,
 		shouldPersist: true,

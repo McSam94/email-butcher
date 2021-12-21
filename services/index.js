@@ -3,16 +3,19 @@ import axios from 'axios'
 const ApiUtil = () => {
 	const apiClient = axios.create({
 		baseURL: process.env.NEXT_PUBLIC_BASE_URL,
-		timeout: 300000,
 	})
 
 	apiClient.interceptors.response.use(response => {
 		return response?.data
 	})
 
-	const injectToken = token => {
-		if (!token) return
+	const injectToken = (token, cb) => {
+		if (!token) {
+			cb?.()
+			return
+		}
 		apiClient.defaults.headers.Authorization = `Bearer ${token}`
+		cb?.()
 	}
 
 	const removeToken = () => {

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Box, Card, TextField, Typography } from '@mui/material'
+import { Box, Divider, TextField, Typography } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import Head from 'next/head'
 import Logo from '@/components/logo'
@@ -94,46 +94,47 @@ const Main = () => {
 			<Box
 				sx={{
 					flexGrow: 1,
-					width: '420px',
+					width: '100%',
 					display: 'flex',
 					flexDirection: 'column',
 					alignSelf: 'center',
 					textAlign: 'center',
-					mt: 12,
+					my: 12,
 					'& form': {
 						display: 'flex',
 						flexDirection: 'column',
 					},
 					'& form .MuiTextField-root': {
-						marginTop: 4,
+						marginTop: 2,
+						width: '100%',
 					},
 				}}
 			>
-				<Box>
+				<Box sx={{ maxWidth: '420px', alignSelf: 'center' }}>
 					<Logo size="l" />
 					<Typography variant="h6" sx={{ color: 'primary.light' }}>
 						Sit veniam esse esse culpa qui cillum sunt dolore.
 					</Typography>
 				</Box>
-				<Card sx={{ p: 3, mt: 12 }} variant="outlined">
-					<Typography
-						variant="subtitle1"
-						sx={{ color: 'secondary.light', fontWeight: 'bold' }}
-					>
-						Try Now for Free
-					</Typography>
+				<Divider sx={{ mt: 12, mb: 10, width: '80%', alignSelf: 'center' }} />
+				{/* <Typography
+					variant="h4"
+					sx={{ color: 'secondary.light', fontWeight: 'bold' }}
+				>
+					Try Now for Free
+				</Typography> */}
+				<Box sx={{ maxWidth: '420px', alignSelf: 'center' }}>
 					<form onSubmit={handleSubmit(onSubmit)}>
-						<TextField
-							{...register('folderName')}
-							error={!!errors?.folderName}
-							label="Folder Name"
-							variant="outlined"
-							size="small"
-							helperText={
-								errors?.folderName?.message ??
-								"Folder will be created at your Google Drive's root path"
-							}
-						/>
+						<Typography
+							variant="h4"
+							sx={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
+						>
+							Step 1
+						</Typography>
+						<Typography variant="subtitle1" sx={{ color: 'text.secondary' }}>
+							Put in the sender&apos;s email address you want to extract
+							attachment
+						</Typography>
 						<TextField
 							{...register('email')}
 							error={!!errors?.email}
@@ -145,6 +146,29 @@ const Main = () => {
 								'Sender email address to filter email that you want to extract'
 							}
 						/>
+						<Box sx={{ mt: 4 }}>
+							<Typography
+								variant="h4"
+								sx={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
+							>
+								Step 2
+							</Typography>
+							<Typography variant="subtitle1" sx={{ color: 'text.secondary' }}>
+								Folder name you want to create at your Google Drive&apos;s root
+								path
+							</Typography>
+							<TextField
+								{...register('folderName')}
+								error={!!errors?.folderName}
+								label="Folder Name"
+								variant="outlined"
+								size="small"
+								helperText={
+									errors?.folderName?.message ??
+									"Folder will be created at your Google Drive's root path"
+								}
+							/>
+						</Box>
 						{isLoggedIn ? (
 							<LoadingButton
 								disableRipple
@@ -162,7 +186,7 @@ const Main = () => {
 							<LoadingButton
 								disableRipple
 								disableElevation
-								sx={{ mt: 4 }}
+								sx={{ mt: 5 }}
 								variant="contained"
 								loading={isLoggingIn}
 								loadingPosition="start"
@@ -173,7 +197,7 @@ const Main = () => {
 							</LoadingButton>
 						)}
 					</form>
-				</Card>
+				</Box>
 			</Box>
 		</>
 	)

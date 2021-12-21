@@ -5,6 +5,7 @@ import TOAST from '@/constants/toast'
 import { useAuthStore, initAuthState } from '@/store/auth'
 import { useUiStore, initUiState } from '@/store/ui'
 import Header from '@/components/header'
+import Config from '@/constants/config'
 import { Box } from '@mui/material'
 import ApiUtil from '@/services/index'
 
@@ -14,9 +15,16 @@ const Layout = ({ children }) => {
 		useAuthStore()
 	const { toast } = useUiStore()
 
+	const [isReady, setIsReady] = React.useState(false)
+
 	initAuthState()
 	initUiState()
-	ApiUtil.injectToken(token)
+
+	React.useEffect(() => {
+		ApiUtil.injectToken(token, () => {
+			setIsReady(true)
+		})
+	}, [token])
 
 	React.useEffect(() => {
 		if (isLoggedIn) return
@@ -38,6 +46,10 @@ const Layout = ({ children }) => {
 		}
 	}, [justLoggedIn, finishLogin, push, toast, getProfile])
 
+	if (!isReady) {
+		return null
+	}
+
 	return (
 		<>
 			<Header />
@@ -46,8 +58,10 @@ const Layout = ({ children }) => {
 				sx={{
 					display: 'flex',
 					flexDirection: 'column',
-					height: '100vh',
+					height: `calc(100vh - ${Config.HEADER_HEIGHT}px)`,
 					width: '100vw',
+					bgcolor: 'grey.100',
+					overflowY: 'scroll',
 					p: 2,
 				}}
 			>

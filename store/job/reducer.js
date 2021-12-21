@@ -87,6 +87,33 @@ export const JobReducer = (state, action) => {
 				ranJob: null,
 				runJobError: null,
 			}
+		case jobActions.GET_JOBS.REQUEST:
+			return {
+				...state,
+				isGettingJobs: true,
+			}
+		case jobActions.GET_JOBS.SUCCESS:
+			return {
+				...state,
+				isGettingJobs: false,
+				hasGotJobs: true,
+				jobs: action?.payload?.jobs,
+			}
+		case jobActions.GET_JOBS.FAIL:
+			return {
+				...state,
+				isGettingJobs: false,
+				hasGotJobs: false,
+				getJobError: action?.payload?.error,
+			}
+		case jobActions.GET_JOBS.RESET:
+			return {
+				...state,
+				isGettingJobs: false,
+				hasGotJobs: false,
+				jobs: null,
+				getJobError: null,
+			}
 		default:
 			throw new Error(`Invalid Action ${action.type}`)
 	}
