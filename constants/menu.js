@@ -3,6 +3,10 @@ export default Object.freeze({
 		label: 'Home',
 		link: '/',
 	},
+	SCHEDULE: {
+		label: 'Jobs',
+		link: '/jobs',
+	},
 	SETTINGS: {
 		label: 'Settings',
 		link: '/settings',

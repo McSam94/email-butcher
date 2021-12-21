@@ -26,6 +26,32 @@ export const AuthReducer = (state, action) => {
 				justLoggedIn: false,
 				token: null,
 			}
+		case authAction.PROFILE.REQUEST:
+			return {
+				...state,
+				isGettingProfile: true,
+			}
+		case authAction.PROFILE.SUCCESS:
+			return {
+				...state,
+				isGettingProfile: false,
+				hasGotProfile: true,
+				profile: action?.payload?.profile,
+			}
+		case authAction.PROFILE.FAIL:
+			return {
+				...state,
+				isGettingProfile: false,
+				hasGotProfile: false,
+				getProfileError: action?.payload?.error,
+			}
+		case authAction.PROFILE.RESET:
+			return {
+				...state,
+				isGettingProfile: false,
+				hasGotProfile: false,
+				getProfileError: null,
+			}
 		default:
 			throw new Error(`Invalid Action ${action.type}`)
 	}

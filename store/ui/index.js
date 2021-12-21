@@ -27,7 +27,10 @@ export const initUiState = () => {
 	const { setState } = React.useContext(UiContext)
 
 	React.useEffect(() => {
-		setState(getInitialState(STORE_NAME))
+		const persistState = getInitialState(STORE_NAME)
+		if (persistState) {
+			setState(persistState)
+		}
 	}, []) // eslint-disable-line react-hooks/exhaustive-deps
 }
 

@@ -1,10 +1,13 @@
-import servicer from '@/services/index'
+import ApiUtil from '@/services/index'
+
+const { post, get } = ApiUtil
 
 const AuthSrv = {
 	login: () =>
-		servicer.post('/login', {
+		post('/login', {
 			redirectUrl: process.env.NEXT_PUBLIC_LOGIN_REDIRECT_URI,
 		}),
+	getProfile: () => get('/user/me'),
 }
 
 export default AuthSrv

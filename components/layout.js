@@ -1,43 +1,20 @@
 import * as React from 'react'
-import { Box, List, ListItem, ListItemIcon, ListItemText } from '@mui/material'
-import LoadingButton from '@mui/lab/LoadingButton'
-import LoginIcon from '@mui/icons-material/Login'
-import LogoutIcon from '@mui/icons-material/Logout'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import capitalize from 'lodash/capitalize'
-import { getMenuIcon } from '@/utilities/menu'
 import Toast from '@/components/toast'
-import MENU from '@/constants/menu'
 import TOAST from '@/constants/toast'
-import Config from '@/constants/config'
-import AuthSrv from '@/services/auth'
 import { useAuthStore, initAuthState } from '@/store/auth'
 import { useUiStore, initUiState } from '@/store/ui'
+import Header from '@/components/header'
+import { Box } from '@mui/material'
 
 const Layout = ({ children }) => {
 	const { push } = useRouter()
-	const { login, logout, isLoggedIn, justLoggedIn, finishLogin } =
+	const { login, isLoggedIn, justLoggedIn, finishLogin, getProfile } =
 		useAuthStore()
 	const { toast } = useUiStore()
 
-	const [isLoggingIn, setIsLoggingIn] = React.useState(false)
-
 	initAuthState()
 	initUiState()
-
-	const onLogin = React.useCallback(async () => {
-		setIsLoggingIn(true)
-		const {
-			data: { url },
-		} = await AuthSrv.login()
-
-		push(url)
-	}, [push])
-
-	const onLogout = React.useCallback(() => {
-		logout()
-	}, [logout])
 
 	React.useEffect(() => {
 		if (isLoggedIn) return
@@ -55,55 +32,25 @@ const Layout = ({ children }) => {
 		if (justLoggedIn) {
 			toast('Success Login', TOAST.SUCCESS)
 			finishLogin()
+			getProfile()
 		}
-	}, [justLoggedIn, finishLogin, push, toast])
+	}, [justLoggedIn, finishLogin, push, toast, getProfile])
 
 	return (
 		<>
+			<Header />
 			<Box
-				component="nav"
+				component="main"
 				sx={{
 					display: 'flex',
-					width: '100%',
-					justifyContent: 'center',
-					bgcolor: 'grey.100',
-					height: Config.HEADER_HEIGHT,
+					flexDirection: 'column',
+					height: '100vh',
+					width: '100vw',
+					p: 2,
 				}}
 			>
-				<List sx={{ display: 'inline-flex', py: 0, height: '100%' }}>
-					{Object.values(MENU).map(({ label, link }) => (
-						<Link href={link} passHref key={label}>
-							<ListItem button>
-								<ListItemIcon>{getMenuIcon(label)}</ListItemIcon>
-								<ListItemText>{capitalize(label)}</ListItemText>
-							</ListItem>
-						</Link>
-					))}
-					{!isLoggedIn && (
-						<ListItem>
-							<LoadingButton
-								disableRipple
-								loading={isLoggingIn}
-								loadingPosition="start"
-								startIcon={<LoginIcon />}
-								variant="outlined"
-								onClick={onLogin}
-							>
-								Login
-							</LoadingButton>
-						</ListItem>
-					)}
-					{isLoggedIn && (
-						<ListItem button onClick={onLogout}>
-							<ListItemIcon>
-								<LogoutIcon />
-							</ListItemIcon>
-							<ListItemText>Logout</ListItemText>
-						</ListItem>
-					)}
-				</List>
+				{children}
 			</Box>
-			<main>{children}</main>
 			<Toast />
 		</>
 	)

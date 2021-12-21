@@ -1,11 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import * as React from 'react'
+import ApiUtil from '@/services/index'
+import AuthSrv from '@/services/auth'
+import { generateRequestActions } from '@/utilities/request'
 
 export const authAction = Object.freeze({
 	SET_STATE: 'setState',
 	LOGIN: 'login',
 	LOGOUT: 'logout',
 	FINISH_LOGIN: 'finishLogin',
+	PROFILE: generateRequestActions('profile'),
 })
 
 export const setState = dispatch =>
@@ -16,15 +20,39 @@ export const setState = dispatch =>
 
 export const login = dispatch =>
 	React.useCallback(
-		token => dispatch({ type: authAction.LOGIN, payload: { token } }),
+		token => {
+			dispatch({ type: authAction.LOGIN, payload: { token } })
+			ApiUtil.injectToken(token)
+		},
 		[dispatch]
 	)
 
 export const logout = dispatch =>
-	React.useCallback(() => dispatch({ type: authAction.LOGOUT }), [dispatch])
+	React.useCallback(() => {
+		dispatch({ type: authAction.LOGOUT })
+		dispatch({ type: authAction.PROFILE.RESET })
+	}, [dispatch])
 
 export const finishLogin = dispatch =>
 	React.useCallback(
 		() => dispatch({ type: authAction.FINISH_LOGIN }),
 		[dispatch]
 	)
+
+export const getProfile = dispatch =>
+	React.useCallback(async () => {
+		dispatch({ type: authAction.PROFILE.REQUEST })
+
+		try {
+			const { success, data, error } = await AuthSrv.getProfile()
+
+			if (success)
+				dispatch({
+					type: authAction.PROFILE.SUCCESS,
+					payload: { profile: data },
+				})
+			else throw new Error(error)
+		} catch (error) {
+			dispatch({ type: authAction.PROFILE.FAIL, payload: { error } })
+		}
+	}, [dispatch])
