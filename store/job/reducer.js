@@ -6,6 +6,33 @@ export const JobReducer = (state, action) => {
 			return {
 				...action?.payload?.state,
 			}
+		case jobActions.INSTANT_JOB.REQUEST:
+			return {
+				...state,
+				isInstantingJob: true,
+			}
+		case jobActions.INSTANT_JOB.SUCCESS:
+			return {
+				...state,
+				isInstantingJob: false,
+				hasInstantJob: true,
+				instantJob: action?.payload?.job,
+			}
+		case jobActions.INSTANT_JOB.FAIL:
+			return {
+				...state,
+				isInstantingJob: false,
+				hasInstantJob: false,
+				instantJobError: action?.payload?.error,
+			}
+		case jobActions.INSTANT_JOB.RESET:
+			return {
+				...state,
+				isInstantingJob: false,
+				hasInstantJob: false,
+				instantJob: null,
+				instantJobError: null,
+			}
 		case jobActions.CREATE_JOB.REQUEST:
 			return {
 				...state,
@@ -30,6 +57,7 @@ export const JobReducer = (state, action) => {
 				...state,
 				isCreatingJob: false,
 				hasCreatedJob: false,
+				createdJob: null,
 				createJobError: null,
 			}
 		case jobActions.RUN_JOB.REQUEST:

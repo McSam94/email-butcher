@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Box, TextField } from '@mui/material'
+import { Box, Card, TextField, Typography } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import Head from 'next/head'
 import Logo from '@/components/logo'
@@ -10,22 +10,28 @@ import { useJobStore } from '@/store/job'
 import { useUiStore } from '@/store/ui'
 import TOAST from '@/constants/toast'
 import RunIcon from '@mui/icons-material/DirectionsRun'
+import GoogleIcon from '@mui/icons-material/Google'
+import { useAuthStore } from '@/store/auth'
+import AuthSrv from '@/services/auth'
+import { useRouter } from 'next/router'
 
 const Main = () => {
+	const { push } = useRouter()
 	const {
-		createJob,
-		hasCreatedJob,
-		isCreatingJob,
-		hasRanJob,
-		createJobError,
-		resetCreateJob,
+		instantJob,
+		hasInstantJob,
+		isInstantingJob,
+		instantJobError,
+		resetInstantJob,
 	} = useJobStore()
 	const { toast } = useUiStore()
+	const { isLoggedIn } = useAuthStore()
+
+	const [isLoggingIn, setIsLoggingIn] = React.useState(false)
 
 	const jobSchema = React.useMemo(
 		() =>
 			yup.object().shape({
-				name: yup.string().required('Name is required'),
 				folderName: yup.string().required('Folder name is required'),
 				email: yup.string().required('Email is required'),
 			}),
@@ -42,40 +48,40 @@ const Main = () => {
 	})
 
 	const onSubmit = React.useCallback(
-		({ name, folderName, email }) => {
-			createJob({
-				name,
+		({ folderName, email }) => {
+			instantJob({
 				folderName,
 				mailQuery: `from:${email},has:attachment`,
-				recurring: false,
 			})
 		},
-		[createJob]
+		[instantJob]
 	)
 
+	const onSignUp = React.useCallback(async () => {
+		setIsLoggingIn(true)
+		const {
+			data: { url },
+		} = await AuthSrv.login()
+
+		push(url)
+	}, [push])
+
 	React.useEffect(() => {
-		if (hasCreatedJob) {
+		if (hasInstantJob) {
 			reset()
-			toast(
-				'Job successfully created and running in background!',
-				TOAST.SUCCESS
-			)
+			toast('Job successfully ran', TOAST.SUCCESS)
 		}
-	}, [hasCreatedJob, toast, reset])
+	}, [hasInstantJob, toast, reset])
 
 	React.useEffect(() => {
-		if (hasRanJob) toast('Job has completed!', TOAST.SUCCESS)
-	}, [hasRanJob, toast])
-
-	React.useEffect(() => {
-		if (createJobError) {
+		if (instantJobError) {
 			toast(
 				"Ops! Looks like we're having trouble running the job.",
 				TOAST.ERROR
 			)
-			resetCreateJob()
+			resetInstantJob()
 		}
-	}, [createJobError, toast, resetCreateJob])
+	}, [instantJobError, toast, resetInstantJob])
 
 	return (
 		<>
@@ -103,48 +109,71 @@ const Main = () => {
 					},
 				}}
 			>
-				<Logo size="l" />
-				<form onSubmit={handleSubmit(onSubmit)}>
-					<TextField
-						{...register('name')}
-						error={!!errors?.name}
-						label="Name"
-						variant="outlined"
-						size="small"
-						helperText={errors?.name?.message ?? ''}
-					/>
-					<TextField
-						{...register('folderName')}
-						error={!!errors?.folderName}
-						label="Folder Name"
-						variant="outlined"
-						size="small"
-						helperText={
-							errors?.folderName?.message ??
-							"Folder will be created at your Google Drive's root path"
-						}
-					/>
-					<TextField
-						{...register('email')}
-						error={!!errors?.email}
-						label="Sender Email"
-						variant="outlined"
-						size="small"
-						helperText={errors?.email?.message ?? 'Sender email'}
-					/>
-					<LoadingButton
-						disableRipple
-						disableElevation
-						sx={{ mt: 4 }}
-						variant="contained"
-						loading={isCreatingJob}
-						loadingPosition="start"
-						startIcon={<RunIcon />}
-						type="submit"
+				<Box>
+					<Logo size="l" />
+					<Typography variant="h6" sx={{ color: 'text.secondary' }}>
+						Sit veniam esse esse culpa qui cillum sunt dolore.
+					</Typography>
+				</Box>
+				<Card sx={{ p: 3, mt: 12 }} variant="outlined">
+					<Typography
+						variant="subtitle1"
+						sx={{ color: 'secondary.light', fontWeight: 'bold' }}
 					>
-						Run instantly
-					</LoadingButton>
-				</form>
+						Try Now for Free
+					</Typography>
+					<form onSubmit={handleSubmit(onSubmit)}>
+						<TextField
+							{...register('folderName')}
+							error={!!errors?.folderName}
+							label="Folder Name"
+							variant="outlined"
+							size="small"
+							helperText={
+								errors?.folderName?.message ??
+								"Folder will be created at your Google Drive's root path"
+							}
+						/>
+						<TextField
+							{...register('email')}
+							error={!!errors?.email}
+							label="Sender Email Address"
+							variant="outlined"
+							size="small"
+							helperText={
+								errors?.email?.message ??
+								'Sender email address to filter email that you want to extract'
+							}
+						/>
+						{isLoggedIn ? (
+							<LoadingButton
+								disableRipple
+								disableElevation
+								sx={{ mt: 4 }}
+								variant="contained"
+								loading={isInstantingJob}
+								loadingPosition="start"
+								startIcon={<RunIcon />}
+								type="submit"
+							>
+								Run
+							</LoadingButton>
+						) : (
+							<LoadingButton
+								disableRipple
+								disableElevation
+								sx={{ mt: 4 }}
+								variant="contained"
+								loading={isLoggingIn}
+								loadingPosition="start"
+								startIcon={<GoogleIcon />}
+								onClick={onSignUp}
+							>
+								Sign up to try
+							</LoadingButton>
+						)}
+					</form>
+				</Card>
 			</Box>
 		</>
 	)

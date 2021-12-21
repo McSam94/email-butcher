@@ -5,6 +5,7 @@ import { generateRequestActions } from '@/utilities/request'
 
 export const jobActions = Object.freeze({
 	SET_STATE: 'setState',
+	INSTANT_JOB: generateRequestActions('instantJob'),
 	CREATE_JOB: generateRequestActions('createJob'),
 	RUN_JOB: generateRequestActions('runJob'),
 })
@@ -12,6 +13,33 @@ export const jobActions = Object.freeze({
 export const setState = dispatch =>
 	React.useCallback(
 		state => dispatch({ type: jobActions.SET_STATE, payload: { state } }),
+		[dispatch]
+	)
+
+export const instantJob = dispatch =>
+	React.useCallback(
+		async job => {
+			dispatch({ type: jobActions.INSTANT_JOB.REQUEST })
+
+			try {
+				const { success, data, error } = await JobSrv.instantJob(job)
+
+				if (!success) throw new Error(error)
+
+				dispatch({
+					type: jobActions.INSTANT_JOB.SUCCESS,
+					payload: { job: data },
+				})
+			} catch (error) {
+				dispatch({ type: jobActions.INSTANT_JOB.FAIL, payload: { error } })
+			}
+		},
+		[dispatch]
+	)
+
+export const resetInstantJob = dispatch =>
+	React.useCallback(
+		() => dispatch({ type: jobActions.INSTANT_JOB.RESET }),
 		[dispatch]
 	)
 

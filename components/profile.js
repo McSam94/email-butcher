@@ -48,13 +48,13 @@ const Profile = () => {
 	return (
 		<>
 			{!isProfileReady && (
-				<Skeleton variant="circular" width={32} height={32} />
+				<Skeleton variant="circular" width={40} height={40} />
 			)}
 			{isProfileReady && (
 				<>
 					<Tooltip title="Profile">
 						<IconButton onClick={onProfileOpen} size="small">
-							<Avatar sx={{ width: 32, height: 32 }} src={profile.picture} />
+							<Avatar sx={{ width: 40, height: 40 }} src={profile.picture} />
 						</IconButton>
 					</Tooltip>
 					<Menu anchorEl={anchorEl} open={open} onClose={onProfileClose}>
@@ -67,18 +67,20 @@ const Profile = () => {
 								alignItems: 'center',
 							}}
 						>
-							<Avatar sx={{ width: 100, height: 100 }} src={profile?.picture} />
+							<Avatar sx={{ width: 70, height: 70 }} src={profile?.picture} />
 							<Typography
-								variant="h6"
-								component="h2"
-								sx={{ fontWeight: 'medium' }}
+								variant="subtitle1"
+								sx={{ fontWeight: 'medium', fontFamily: 'sans-serif', mt: 2 }}
 							>
 								{profile?.name}
 							</Typography>
-							<Typography variant="caption">{profile?.email}</Typography>
+							<Typography variant="caption" sx={{ color: 'grey.600' }}>
+								{profile?.email}
+							</Typography>
 							<LoadingButton
+								size="small"
 								sx={{ mt: 2 }}
-								variant="contained"
+								variant="outlined"
 								startIcon={<LogoutIcon />}
 								onClick={onLogout}
 								loadingPosition="start"

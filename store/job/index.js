@@ -2,7 +2,12 @@
 import * as React from 'react'
 import { getInitialState } from '@/utilities/local-storage'
 import useReducerContext from '@/hooks/useReducerContext'
-import { createJob, resetCreateJob } from './actions'
+import {
+	createJob,
+	instantJob,
+	resetCreateJob,
+	resetInstantJob,
+} from './actions'
 import { JobReducer } from './reducer'
 
 const STORE_NAME = 'JobStore'
@@ -12,6 +17,8 @@ export const { Context: JobContext, Provider: JobProvider } =
 	useReducerContext({
 		reducer: JobReducer,
 		actions: {
+			instantJob,
+			resetInstantJob,
 			createJob,
 			resetCreateJob,
 		},
@@ -25,6 +32,11 @@ export const { Context: JobContext, Provider: JobProvider } =
 			hasJobRan: false,
 			ranJob: null,
 			runJobError: null,
+
+			isInstantingJob: false,
+			hasInstantJob: false,
+			instantJob: null,
+			instantJobError: null,
 		},
 		displayName: STORE_NAME,
 		shouldPersist: true,
