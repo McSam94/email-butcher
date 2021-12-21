@@ -12,7 +12,14 @@ import TOAST from '@/constants/toast'
 import RunIcon from '@mui/icons-material/DirectionsRun'
 
 const Main = () => {
-	const { createJob, hasCreatedJob, isCreatingJob, hasRanJob } = useJobStore()
+	const {
+		createJob,
+		hasCreatedJob,
+		isCreatingJob,
+		hasRanJob,
+		createJobError,
+		resetCreateJob,
+	} = useJobStore()
 	const { toast } = useUiStore()
 
 	const jobSchema = React.useMemo(
@@ -25,7 +32,12 @@ const Main = () => {
 		[]
 	)
 
-	const { register, handleSubmit, reset } = useForm({
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		reset,
+	} = useForm({
 		resolver: yupResolver(jobSchema),
 	})
 
@@ -54,6 +66,16 @@ const Main = () => {
 	React.useEffect(() => {
 		if (hasRanJob) toast('Job has completed!', TOAST.SUCCESS)
 	}, [hasRanJob, toast])
+
+	React.useEffect(() => {
+		if (createJobError) {
+			toast(
+				"Ops! Looks like we're having trouble running the job.",
+				TOAST.ERROR
+			)
+			resetCreateJob()
+		}
+	}, [createJobError, toast, resetCreateJob])
 
 	return (
 		<>
@@ -85,23 +107,30 @@ const Main = () => {
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<TextField
 						{...register('name')}
+						error={!!errors?.name}
 						label="Name"
 						variant="outlined"
 						size="small"
+						helperText={errors?.name?.message ?? ''}
 					/>
 					<TextField
 						{...register('folderName')}
+						error={!!errors?.folderName}
 						label="Folder Name"
 						variant="outlined"
 						size="small"
-						helperText="Folder will be created at your Google Drive's root path"
+						helperText={
+							errors?.folderName?.message ??
+							"Folder will be created at your Google Drive's root path"
+						}
 					/>
 					<TextField
 						{...register('email')}
+						error={!!errors?.email}
 						label="Sender Email"
 						variant="outlined"
 						size="small"
-						helperText="Sender email"
+						helperText={errors?.email?.message ?? 'Sender email'}
 					/>
 					<LoadingButton
 						disableRipple

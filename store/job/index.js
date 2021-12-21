@@ -2,7 +2,7 @@
 import * as React from 'react'
 import { getInitialState } from '@/utilities/local-storage'
 import useReducerContext from '@/hooks/useReducerContext'
-import { createJob } from './actions'
+import { createJob, resetCreateJob } from './actions'
 import { JobReducer } from './reducer'
 
 const STORE_NAME = 'JobStore'
@@ -13,6 +13,7 @@ export const { Context: JobContext, Provider: JobProvider } =
 		reducer: JobReducer,
 		actions: {
 			createJob,
+			resetCreateJob,
 		},
 		initialState: {
 			isCreatingJob: false,

@@ -12,7 +12,7 @@ const Toast = () => {
 					<Snackbar
 						key={index}
 						open={!!toast}
-						autoHideDuration={6000}
+						autoHideDuration={4000}
 						onClose={() => closeToast(index)}
 					>
 						<Alert

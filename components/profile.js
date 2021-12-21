@@ -2,7 +2,6 @@ import * as React from 'react'
 import {
 	Avatar,
 	Box,
-	Button,
 	IconButton,
 	Menu,
 	Skeleton,
@@ -11,11 +10,22 @@ import {
 } from '@mui/material'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { useAuthStore } from '@/store/auth'
+import AuthSrv from '@/services/auth'
+import { useRouter } from 'next/router'
+import LoadingButton from '@mui/lab/LoadingButton'
 
 const Profile = () => {
+	const { push } = useRouter()
 	const { profile, logout, isGettingProfile, hasGotProfile } = useAuthStore()
 	const [anchorEl, setAnchorEl] = React.useState(null)
-	const open = Boolean(anchorEl)
+	const [isLoggingOut, setIsLoggingOut] = React.useState(false)
+
+	const open = React.useMemo(() => Boolean(anchorEl), [anchorEl])
+
+	const isProfileReady = React.useMemo(
+		() => !isGettingProfile && hasGotProfile,
+		[isGettingProfile, hasGotProfile]
+	)
 
 	const onProfileOpen = React.useCallback(({ currentTarget }) => {
 		setAnchorEl(currentTarget)
@@ -25,28 +35,29 @@ const Profile = () => {
 		setAnchorEl(null)
 	}, [])
 
-	const onLogout = React.useCallback(() => {
+	const onLogout = React.useCallback(async () => {
+		setIsLoggingOut(true)
+		const {
+			data: { url },
+		} = await AuthSrv.logout()
+
 		logout()
-	}, [logout])
+		push(url)
+	}, [push, logout])
 
 	return (
 		<>
-			{isGettingProfile && (
+			{!isProfileReady && (
 				<Skeleton variant="circular" width={32} height={32} />
 			)}
-			{hasGotProfile && (
+			{isProfileReady && (
 				<>
 					<Tooltip title="Profile">
 						<IconButton onClick={onProfileOpen} size="small">
 							<Avatar sx={{ width: 32, height: 32 }} src={profile.picture} />
 						</IconButton>
 					</Tooltip>
-					<Menu
-						anchorEl={anchorEl}
-						open={open}
-						onClose={onProfileClose}
-						onClick={onProfileClose}
-					>
+					<Menu anchorEl={anchorEl} open={open} onClose={onProfileClose}>
 						<Box
 							sx={{
 								px: 4,
@@ -65,15 +76,17 @@ const Profile = () => {
 								{profile?.name}
 							</Typography>
 							<Typography variant="caption">{profile?.email}</Typography>
-							<Button
+							<LoadingButton
 								sx={{ mt: 2 }}
 								variant="contained"
 								startIcon={<LogoutIcon />}
 								onClick={onLogout}
+								loadingPosition="start"
+								loading={isLoggingOut}
 								disableElevation
 							>
 								Logout
-							</Button>
+							</LoadingButton>
 						</Box>
 					</Menu>
 				</>

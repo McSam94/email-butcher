@@ -6,7 +6,7 @@ import { generateRequestActions } from '@/utilities/request'
 export const authAction = Object.freeze({
 	SET_STATE: 'setState',
 	LOGIN: 'login',
-	LOGOUT: generateRequestActions('logout'),
+	LOGOUT: 'logout',
 	FINISH_LOGIN: 'finishLogin',
 	PROFILE: generateRequestActions('profile'),
 })
@@ -26,20 +26,10 @@ export const login = dispatch =>
 	)
 
 export const logout = dispatch =>
-	React.useCallback(async () => {
-		dispatch({ type: authAction.LOGOUT.REQUEST })
-
-		try {
-			const { success, error } = await AuthSrv.logout()
-
-			if (success) {
-				dispatch({ type: authAction.LOGOUT.SUCCESS })
-				dispatch({ type: authAction.PROFILE.RESET })
-			} else throw new Error(error)
-		} catch (error) {
-			dispatch({ type: authAction.LOGOUT.FAIL, payload: { error } })
-		}
-	}, [dispatch])
+	React.useCallback(
+		async () => dispatch({ type: authAction.LOGOUT }),
+		[dispatch]
+	)
 
 export const finishLogin = dispatch =>
 	React.useCallback(

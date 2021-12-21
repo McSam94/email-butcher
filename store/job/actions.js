@@ -56,3 +56,9 @@ export const createJob = dispatch =>
 		},
 		[dispatch]
 	)
+
+export const resetCreateJob = dispatch =>
+	React.useCallback(
+		() => dispatch({ type: jobActions.CREATE_JOB.RESET }),
+		[dispatch]
+	)
