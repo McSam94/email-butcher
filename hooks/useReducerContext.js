@@ -22,7 +22,7 @@ const useReducerContext = ({
 
 		const boundActions = {}
 		for (const key in actions) {
-			boundActions[key] = actions[key](dispatch)
+			boundActions[key] = actions[key](dispatch, state)
 		}
 
 		return (

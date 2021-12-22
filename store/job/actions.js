@@ -92,23 +92,56 @@ export const resetCreateJob = dispatch =>
 		[dispatch]
 	)
 
-export const getJobs = dispatch =>
+const getJobs = async (dispatch, params) => {
+	dispatch({ type: jobActions.GET_JOBS.REQUEST })
+
+	try {
+		const {
+			success,
+			data: { results, pagination },
+			error,
+		} = await JobSrv.getJobs({
+			...params,
+			paginationMeta: true,
+		})
+
+		if (success)
+			dispatch({
+				type: jobActions.GET_JOBS.SUCCESS,
+				payload: { jobs: results, pagination },
+			})
+		else throw new Error(error)
+	} catch (error) {
+		dispatch({ type: jobActions.GET_JOBS.FAIL, payload: { error } })
+	}
+}
+
+export const getInitialJobs = (dispatch, { pagination: { limit, current } }) =>
+	React.useCallback(async () => {
+		getJobs(dispatch, {
+			limit,
+			page: current,
+		})
+	}, [dispatch, limit, current])
+
+export const getPageJobs = (dispatch, { pagination: { limit } }) =>
 	React.useCallback(
-		async params => {
-			dispatch({ type: jobActions.GET_JOBS.REQUEST })
-
-			try {
-				const { success, data, error } = await JobSrv.getJobs(params)
-
-				if (success)
-					dispatch({
-						type: jobActions.GET_JOBS.SUCCESS,
-						payload: { jobs: data },
-					})
-				else throw new Error(error)
-			} catch (error) {
-				dispatch({ type: jobActions.GET_JOBS.FAIL, payload: { error } })
-			}
+		async newPage => {
+			getJobs(dispatch, {
+				limit,
+				page: newPage,
+			})
 		},
-		[dispatch]
+		[dispatch, limit]
+	)
+
+export const updatePageSize = (dispatch, { pagination: { current } }) =>
+	React.useCallback(
+		async newLimit => {
+			getJobs(dispatch, {
+				limit: newLimit,
+				current,
+			})
+		},
+		[dispatch, current]
 	)

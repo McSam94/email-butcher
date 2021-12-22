@@ -21,10 +21,11 @@ const Layout = ({ children }) => {
 	initUiState()
 
 	React.useEffect(() => {
+		if (!token && !isLoggedIn) setIsReady(true)
 		ApiUtil.injectToken(token, () => {
 			setIsReady(true)
 		})
-	}, [token])
+	}, [token, isLoggedIn])
 
 	React.useEffect(() => {
 		if (isLoggedIn) return

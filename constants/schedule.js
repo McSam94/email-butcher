@@ -28,4 +28,10 @@ export const COLUMNS = [
 		width: 200,
 		valueGetter: param => dayjs(param.value).format('MMM, DD YYYY hh:mm A'),
 	},
+	{
+		field: 'jobResults',
+		headerName: 'Results',
+		valueFormatter: param => param.value.length,
+		valueParser: param => param.value,
+	},
 ]

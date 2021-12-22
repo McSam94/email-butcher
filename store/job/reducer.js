@@ -97,7 +97,8 @@ export const JobReducer = (state, action) => {
 				...state,
 				isGettingJobs: false,
 				hasGotJobs: true,
-				jobs: action?.payload?.jobs,
+				jobs: action?.payload?.jobs ?? null,
+				pagination: action?.payload?.pagination ?? state.pagination,
 			}
 		case jobActions.GET_JOBS.FAIL:
 			return {
@@ -113,6 +114,12 @@ export const JobReducer = (state, action) => {
 				hasGotJobs: false,
 				jobs: null,
 				getJobError: null,
+				pagination: {
+					current: 1,
+					limit: 25,
+					totalItems: 0,
+					totalPages: 0,
+				},
 			}
 		default:
 			throw new Error(`Invalid Action ${action.type}`)

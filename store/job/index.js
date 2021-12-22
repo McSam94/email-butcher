@@ -7,9 +7,11 @@ import {
 	instantJob,
 	resetCreateJob,
 	resetInstantJob,
-	getJobs,
+	getInitialJobs,
+	getPageJobs,
+	updatePageSize,
 } from './actions'
-import { JobReducer } from './reducer'
+import { JobReducer } from '@/store/job/reducer'
 
 const STORE_NAME = 'JobStore'
 
@@ -22,7 +24,9 @@ export const { Context: JobContext, Provider: JobProvider } =
 			resetInstantJob,
 			createJob,
 			resetCreateJob,
-			getJobs,
+			getInitialJobs,
+			getPageJobs,
+			updatePageSize,
 		},
 		initialState: {
 			isCreatingJob: false,
@@ -44,6 +48,12 @@ export const { Context: JobContext, Provider: JobProvider } =
 			hasGotJobs: false,
 			jobs: null,
 			getJobsError: null,
+			pagination: {
+				current: 1,
+				limit: 25,
+				totalItems: 0,
+				totalPages: 0,
+			},
 		},
 		displayName: STORE_NAME,
 		shouldPersist: true,
