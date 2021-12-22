@@ -4,12 +4,18 @@ import { getInitialState } from '@/utilities/local-storage'
 import useReducerContext from '@/hooks/useReducerContext'
 import {
 	createJob,
+	editJob,
 	instantJob,
-	resetCreateJob,
 	resetInstantJob,
-	getInitialJobs,
+	getJobs,
 	getPageJobs,
 	updatePageSize,
+	selectJob,
+	removeSelectedJob,
+	resetEditJob,
+	resetCreateJob,
+	deleteJob,
+	resetDeleteJob,
 } from './actions'
 import { JobReducer } from '@/store/job/reducer'
 
@@ -22,11 +28,17 @@ export const { Context: JobContext, Provider: JobProvider } =
 		actions: {
 			instantJob,
 			resetInstantJob,
+			editJob,
 			createJob,
-			resetCreateJob,
-			getInitialJobs,
+			getJobs,
 			getPageJobs,
 			updatePageSize,
+			selectJob,
+			removeSelectedJob,
+			resetCreateJob,
+			resetEditJob,
+			deleteJob,
+			resetDeleteJob,
 		},
 		initialState: {
 			isCreatingJob: false,
@@ -54,6 +66,17 @@ export const { Context: JobContext, Provider: JobProvider } =
 				totalItems: 0,
 				totalPages: 0,
 			},
+
+			selectedJob: null,
+
+			isEditingJob: false,
+			hasEditedJob: false,
+			editedJob: null,
+			editJobError: null,
+
+			isDeletingJob: false,
+			hasDeletedJob: false,
+			deleteJobError: null,
 		},
 		displayName: STORE_NAME,
 		shouldPersist: true,

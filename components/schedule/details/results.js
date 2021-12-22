@@ -3,9 +3,9 @@ import * as React from 'react'
 import ContentHeader from '@/components/content-header'
 import dayjs from 'dayjs'
 import Config from '@/constants/config'
-import Files from '@/components/schdule/files'
+import Files from '@/components/schedule/details/files'
 
-const Results = ({ name, results }) => {
+const Results = ({ job: { name, jobResults: results } }) => {
 	return (
 		<>
 			<ContentHeader title={`${name}'s results`} />

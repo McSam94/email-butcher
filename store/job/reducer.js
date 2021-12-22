@@ -60,6 +60,33 @@ export const JobReducer = (state, action) => {
 				createdJob: null,
 				createJobError: null,
 			}
+		case jobActions.EDIT_JOB.REQUEST:
+			return {
+				...state,
+				isEditingJob: true,
+			}
+		case jobActions.EDIT_JOB.SUCCESS:
+			return {
+				...state,
+				isEditingJob: false,
+				hasEditedJob: true,
+				editedJob: action?.payload?.job,
+			}
+		case jobActions.EDIT_JOB.FAIL:
+			return {
+				...state,
+				isEditingJob: false,
+				hasEditedJob: false,
+				editJobError: action?.payload?.error,
+			}
+		case jobActions.EDIT_JOB.RESET:
+			return {
+				...state,
+				isEditingJob: false,
+				hasEditedJob: false,
+				editedJob: null,
+				editJobError: null,
+			}
 		case jobActions.RUN_JOB.REQUEST:
 			return {
 				...state,
@@ -120,6 +147,41 @@ export const JobReducer = (state, action) => {
 					totalItems: 0,
 					totalPages: 0,
 				},
+			}
+		case jobActions.SELECT_JOB.ON:
+			return {
+				...state,
+				selectedJob: action?.payload?.job,
+			}
+		case jobActions.SELECT_JOB.OFF:
+			return {
+				...state,
+				selectedJob: null,
+			}
+		case jobActions.DELETE_JOB.REQUEST:
+			return {
+				...state,
+				isDeletingJob: true,
+			}
+		case jobActions.DELETE_JOB.SUCCESS:
+			return {
+				...state,
+				isDeletingJob: false,
+				hasDeletedJob: true,
+			}
+		case jobActions.DELETE_JOB.FAIL:
+			return {
+				...state,
+				isDeletingJob: false,
+				hasDeletedJob: false,
+				deleteJobError: action?.payload?.error,
+			}
+		case jobActions.DELETE_JOB.RESET:
+			return {
+				...state,
+				isDeletingJob: false,
+				hasDeletedJob: false,
+				deleteJobError: null,
 			}
 		default:
 			throw new Error(`Invalid Action ${action.type}`)
