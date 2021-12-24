@@ -2,14 +2,19 @@
 import * as React from 'react'
 import AuthSrv from '@/services/auth'
 import { generateRequestActions } from '@/utilities/request'
+import ApiUtils from '@/services/index'
 
 export const authAction = Object.freeze({
 	SET_STATE: 'setState',
+	SET_READY: 'setReady',
 	LOGIN: 'login',
 	LOGOUT: 'logout',
 	FINISH_LOGIN: 'finishLogin',
 	PROFILE: generateRequestActions('profile'),
 })
+
+export const setReady = dispatch =>
+	React.useCallback(() => dispatch({ type: authAction.SET_READY }), [dispatch])
 
 export const setState = dispatch =>
 	React.useCallback(
@@ -21,6 +26,7 @@ export const login = dispatch =>
 	React.useCallback(
 		token => {
 			dispatch({ type: authAction.LOGIN, payload: { token } })
+			ApiUtils.injectToken(token)
 		},
 		[dispatch]
 	)

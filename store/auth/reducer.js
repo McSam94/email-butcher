@@ -7,6 +7,11 @@ export const AuthReducer = (state, action) => {
 				...action?.payload?.state,
 			}
 		}
+		case authAction.SET_READY:
+			return {
+				...state,
+				isReady: true,
+			}
 		case authAction.LOGIN:
 			return {
 				...state,

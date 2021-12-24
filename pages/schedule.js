@@ -6,8 +6,6 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useJobStore } from '@/store/job'
 import { Box, Divider, Button, Input } from '@mui/material'
-import { useAuthStore } from '@/store/auth'
-import { useRouter } from 'next/router'
 import dayjs from 'dayjs'
 import Details from '@/components/schedule/details'
 import AddEdit from '@/components/schedule/add-edit'
@@ -18,9 +16,9 @@ import TOAST from '@/constants/toast'
 import SearchIcon from '@mui/icons-material/Search'
 import ClearIcon from '@mui/icons-material/Close'
 import debounce from 'lodash/debounce'
+import useTokenReadyEffect from '@/hooks/useTokenReadyEffect'
 
 const Schedule = () => {
-	const { push } = useRouter()
 	const {
 		jobs,
 		getJobs,
@@ -37,7 +35,6 @@ const Schedule = () => {
 		hasCreatedJob,
 		hasEditedJob,
 	} = useJobStore()
-	const { isLoggedIn } = useAuthStore()
 	const { toast } = useUiStore()
 
 	const inputRef = React.useRef()
@@ -46,6 +43,23 @@ const Schedule = () => {
 	const [isDetailModalOpen, setIsDetailModalOpen] = React.useState(false)
 	const [isAddEditModalOpen, setIsAddEditModalOpen] = React.useState(false)
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false)
+
+	const onDelete = React.useCallback(
+		({ row }) => {
+			selectJob(row)
+			setIsDeleteModalOpen(true)
+		},
+		[selectJob]
+	)
+
+	const onEdit = React.useCallback(
+		({ row }) => {
+			selectJob(row)
+			setIsAdd(false)
+			setIsAddEditModalOpen(true)
+		},
+		[selectJob]
+	)
 
 	const tableColumns = React.useMemo(
 		() => [
@@ -120,14 +134,6 @@ const Schedule = () => {
 		removeSelectedJob()
 	}, [removeSelectedJob])
 
-	const onDelete = React.useCallback(
-		({ row }) => {
-			selectJob(row)
-			setIsDeleteModalOpen(true)
-		},
-		[selectJob]
-	)
-
 	const confirmDelete = React.useCallback(() => {
 		deleteJob(selectedJob.id)
 	}, [deleteJob, selectedJob])
@@ -136,15 +142,6 @@ const Schedule = () => {
 		setIsAdd(true)
 		setIsAddEditModalOpen(true)
 	}, [])
-
-	const onEdit = React.useCallback(
-		({ row }) => {
-			selectJob(row)
-			setIsAdd(false)
-			setIsAddEditModalOpen(true)
-		},
-		[selectJob]
-	)
 
 	const onRowClick = React.useCallback(
 		({ row }) => {
@@ -183,11 +180,7 @@ const Schedule = () => {
 		[getJobs]
 	)
 
-	React.useEffect(() => {
-		if (!isLoggedIn) push('/')
-	}, [isLoggedIn, push])
-
-	React.useEffect(() => {
+	useTokenReadyEffect(() => {
 		getJobs()
 	}, [getJobs])
 

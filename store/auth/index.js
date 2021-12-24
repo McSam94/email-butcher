@@ -2,10 +2,33 @@
 import * as React from 'react'
 import { getInitialState } from '@/utilities/local-storage'
 import useReducerContext from '@/hooks/useReducerContext'
-import { login, logout, finishLogin, getProfile, setState } from './actions'
+import ApiUtils from '@/services/index'
+import {
+	login,
+	logout,
+	finishLogin,
+	getProfile,
+	setState,
+	setReady,
+} from './actions'
 import { AuthReducer } from './reducer'
 
 const STORE_NAME = 'AuthStore'
+
+const initialState = {
+	token: null,
+	isLoggedIn: false,
+	justLoggedIn: false,
+
+	isLoggingOut: false,
+	hasLoggedOut: false,
+	logoutError: null,
+
+	isGettingProfile: false,
+	hasGotProfile: false,
+	profile: {},
+	getProfileError: null,
+}
 
 export const { Context: AuthContext, Provider: AuthProvider } =
 	// eslint-disable-next-line react-hooks/rules-of-hooks
@@ -15,36 +38,25 @@ export const { Context: AuthContext, Provider: AuthProvider } =
 			login,
 			logout,
 			setState,
+			setReady,
 			finishLogin,
 			getProfile,
 		},
-		initialState: {
-			token: null,
-			isLoggedIn: false,
-			justLoggedIn: false,
-
-			isLoggingOut: false,
-			hasLoggedOut: false,
-			logoutError: null,
-
-			isGettingProfile: false,
-			hasGotProfile: false,
-			profile: {},
-			getProfileError: null,
-		},
+		initialState,
 		displayName: STORE_NAME,
 		shouldPersist: true,
 	})
 
 export const initAuthState = () => {
-	const { setState } = React.useContext(AuthContext)
+	const { setState } = useAuthStore()
 
 	React.useEffect(() => {
 		const persistState = getInitialState(STORE_NAME)
 		if (persistState) {
 			setState(persistState)
+			ApiUtils.injectToken(persistState?.token)
 		}
-	}, []) // eslint-disable-line react-hooks/exhaustive-deps
+	}, [setState])
 }
 
 export const useAuthStore = () => {

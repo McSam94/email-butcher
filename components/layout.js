@@ -7,25 +7,15 @@ import { useUiStore, initUiState } from '@/store/ui'
 import Header from '@/components/header'
 import Config from '@/constants/config'
 import { Box } from '@mui/material'
-import ApiUtil from '@/services/index'
 
 const Layout = ({ children }) => {
 	const { push } = useRouter()
-	const { token, login, isLoggedIn, justLoggedIn, finishLogin, getProfile } =
+	const { login, isLoggedIn, justLoggedIn, finishLogin, getProfile } =
 		useAuthStore()
 	const { toast } = useUiStore()
 
-	const [isReady, setIsReady] = React.useState(false)
-
 	initAuthState()
 	initUiState()
-
-	React.useEffect(() => {
-		if (!token && !isLoggedIn) setIsReady(true)
-		ApiUtil.injectToken(token, () => {
-			setIsReady(true)
-		})
-	}, [token, isLoggedIn])
 
 	React.useEffect(() => {
 		if (isLoggedIn) return
@@ -46,10 +36,6 @@ const Layout = ({ children }) => {
 			getProfile()
 		}
 	}, [justLoggedIn, finishLogin, push, toast, getProfile])
-
-	if (!isReady) {
-		return null
-	}
 
 	return (
 		<>

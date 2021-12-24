@@ -22,7 +22,7 @@ const Results = ({ job: { name, jobResults: results } }) => {
 							justifyContent: 'flex-start',
 						}}
 					>
-						<Box sx={{ display: 'flex', flexDirection: 'column', flex: 3 }}>
+						<Box sx={{ display: 'flex', flexDirection: 'column', width: 240 }}>
 							<ListItemText>
 								<Typography variant="subtitle1" noWrap>
 									{result.emailTitle}
@@ -32,7 +32,15 @@ const Results = ({ job: { name, jobResults: results } }) => {
 								{dayjs(result.createdAt).format(Config.DATE_FORMAT)}
 							</ListItemText>
 						</Box>
-						<Box sx={{ display: 'flex', flexDirection: 'row', ml: 4, flex: 6 }}>
+						<Box
+							sx={{
+								display: 'flex',
+								flexDirection: 'row',
+								ml: 4,
+								width: 'calc(100% - 240px)',
+								overflowX: 'scroll',
+							}}
+						>
 							<Files files={result.files} />
 						</Box>
 					</ListItem>
