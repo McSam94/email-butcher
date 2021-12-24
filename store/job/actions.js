@@ -104,6 +104,8 @@ export const resetEditJob = dispatch =>
 export const runJob = dispatch =>
 	React.useCallback(
 		async id => {
+			dispatch({ type: jobActions.RUN_JOB.REQUEST, payload: { id } })
+
 			try {
 				const { success, data, error } = await JobSrv.runJob(id)
 
@@ -116,6 +118,12 @@ export const runJob = dispatch =>
 				dispatch({ type: jobActions.RUN_JOB.FAIL, payload: { error } })
 			}
 		},
+		[dispatch]
+	)
+
+export const resetRunJob = dispatch =>
+	React.useCallback(
+		() => dispatch({ type: jobActions.RUN_JOB.RESET }),
 		[dispatch]
 	)
 
@@ -152,6 +160,12 @@ export const getJobs = (dispatch, { pagination: { limit, current } }) =>
 			})
 		},
 		[dispatch, limit, current]
+	)
+
+export const resetGetJobs = dispatch =>
+	React.useCallback(
+		() => dispatch({ type: jobActions.GET_JOBS.RESET }, [dispatch]),
+		[dispatch]
 	)
 
 export const getPageJobs = (dispatch, { pagination: { limit } }) =>

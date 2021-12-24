@@ -16,6 +16,9 @@ import {
 	resetCreateJob,
 	deleteJob,
 	resetDeleteJob,
+	runJob,
+	resetRunJob,
+	resetGetJobs,
 } from './actions'
 import { JobReducer } from '@/store/job/reducer'
 
@@ -39,6 +42,9 @@ export const { Context: JobContext, Provider: JobProvider } =
 			resetEditJob,
 			deleteJob,
 			resetDeleteJob,
+			runJob,
+			resetRunJob,
+			resetGetJobs,
 		},
 		initialState: {
 			isCreatingJob: false,
@@ -47,6 +53,7 @@ export const { Context: JobContext, Provider: JobProvider } =
 			createJobError: null,
 
 			isJobRunning: false,
+			runningJobId: null,
 			hasJobRan: false,
 			ranJob: null,
 			runJobError: null,

@@ -8,5 +8,6 @@ export default function useTokenReadyEffect(fn, deps) {
 		if (!token) return
 
 		fn?.()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [...deps, token])
 }

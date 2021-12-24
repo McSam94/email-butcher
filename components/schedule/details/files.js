@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography } from '@mui/material'
+import { Card, CardContent, Tooltip, Typography } from '@mui/material'
 import * as React from 'react'
 import Config from '@/constants/config'
 
@@ -25,7 +25,9 @@ const Files = ({ files }) => {
 					variant="outlined"
 				>
 					<CardContent>
-						<Typography noWrap>{file.fileName}</Typography>
+						<Tooltip title={file.fileName}>
+							<Typography noWrap>{file.fileName}</Typography>
+						</Tooltip>
 					</CardContent>
 				</Card>
 			))}

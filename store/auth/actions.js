@@ -11,6 +11,7 @@ export const authAction = Object.freeze({
 	LOGOUT: 'logout',
 	FINISH_LOGIN: 'finishLogin',
 	PROFILE: generateRequestActions('profile'),
+	UPDATE_TOKEN: generateRequestActions('updateToken'),
 })
 
 export const setReady = dispatch =>
@@ -60,3 +61,23 @@ export const getProfile = dispatch =>
 			dispatch({ type: authAction.PROFILE.FAIL, payload: { error } })
 		}
 	}, [dispatch])
+
+export const updateToken = dispatch =>
+	React.useCallback(
+		async code => {
+			dispatch({ type: authAction.UPDATE_TOKEN.REQUEST })
+
+			try {
+				const { success, error } = await AuthSrv.updateToken({
+					type: 'google',
+					authCode: code,
+				})
+
+				if (success) dispatch({ type: authAction.UPDATE_TOKEN.SUCCESS })
+				else throw new Error(error)
+			} catch (error) {
+				dispatch({ type: authAction.UPDATE_TOKEN.FAIL, payload: { error } })
+			}
+		},
+		[dispatch]
+	)

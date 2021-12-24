@@ -10,6 +10,8 @@ const AuthSrv = {
 	login: () => post('/login', redirectBody),
 	logout: () => post('/logout', redirectBody),
 	getProfile: () => get('/user/me'),
+	checkGooglePermission: () => post('/checkGooglePermission', redirectBody),
+	updateToken: body => post('/updateToken', body),
 }
 
 export default AuthSrv

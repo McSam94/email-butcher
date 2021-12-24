@@ -91,6 +91,7 @@ export const JobReducer = (state, action) => {
 			return {
 				...state,
 				isRunningJob: true,
+				runningJobId: action?.payload?.id,
 			}
 		case jobActions.RUN_JOB.SUCCESS:
 			return {
@@ -111,6 +112,7 @@ export const JobReducer = (state, action) => {
 				...state,
 				isRunningJob: false,
 				hasJobRan: false,
+				runningJobId: null,
 				ranJob: null,
 				runJobError: null,
 			}

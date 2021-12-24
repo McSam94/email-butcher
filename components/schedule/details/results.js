@@ -1,4 +1,11 @@
-import { List, ListItemText, ListItem, Box, Typography } from '@mui/material'
+import {
+	List,
+	ListItemText,
+	ListItem,
+	Box,
+	Typography,
+	Tooltip,
+} from '@mui/material'
 import * as React from 'react'
 import ContentHeader from '@/components/content-header'
 import dayjs from 'dayjs'
@@ -9,7 +16,7 @@ const Results = ({ job: { name, jobResults: results } }) => {
 	return (
 		<>
 			<ContentHeader title={`${name}'s results`} />
-			<List>
+			<List sx={{ height: `calc(100% - 100px)`, overflowY: 'scroll' }}>
 				{!results.length && <ListItemText>No result yet</ListItemText>}
 				{results.map((result, index) => (
 					<ListItem
@@ -22,11 +29,20 @@ const Results = ({ job: { name, jobResults: results } }) => {
 							justifyContent: 'flex-start',
 						}}
 					>
-						<Box sx={{ display: 'flex', flexDirection: 'column', width: 240 }}>
+						<Box
+							sx={{
+								display: 'flex',
+								flexDirection: 'column',
+								width: 240,
+								cursor: 'pointer',
+							}}
+						>
 							<ListItemText>
-								<Typography variant="subtitle1" noWrap>
-									{result.emailTitle}
-								</Typography>
+								<Tooltip title={result.emailTitle}>
+									<Typography variant="subtitle1" noWrap>
+										{result.emailTitle}
+									</Typography>
+								</Tooltip>
 							</ListItemText>
 							<ListItemText>
 								{dayjs(result.createdAt).format(Config.DATE_FORMAT)}
