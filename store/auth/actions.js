@@ -10,6 +10,7 @@ export const authAction = Object.freeze({
 	LOGIN: 'login',
 	LOGOUT: 'logout',
 	FINISH_LOGIN: 'finishLogin',
+	REMEMBER_ROUTE: 'rememberRoute',
 	PROFILE: generateRequestActions('profile'),
 	UPDATE_TOKEN: generateRequestActions('updateToken'),
 })
@@ -62,6 +63,12 @@ export const getProfile = dispatch =>
 		}
 	}, [dispatch])
 
+export const resetGetProfile = dispatch =>
+	React.useCallback(
+		() => dispatch({ type: authAction.PROFILE.RESET }),
+		[dispatch]
+	)
+
 export const updateToken = dispatch =>
 	React.useCallback(
 		async code => {
@@ -79,5 +86,17 @@ export const updateToken = dispatch =>
 				dispatch({ type: authAction.UPDATE_TOKEN.FAIL, payload: { error } })
 			}
 		},
+		[dispatch]
+	)
+
+export const resetUpdateToken = dispatch =>
+	React.useCallback(
+		() => dispatch({ type: authAction.UPDATE_TOKEN.RESET }),
+		[dispatch]
+	)
+
+export const rememberRoute = dispatch =>
+	React.useCallback(
+		route => dispatch({ type: authAction.REMEMBER_ROUTE, payload: { route } }),
 		[dispatch]
 	)

@@ -10,12 +10,18 @@ import {
 	getProfile,
 	setState,
 	setReady,
-} from './actions'
-import { AuthReducer } from './reducer'
+	updateToken,
+	resetUpdateToken,
+	resetGetProfile,
+	rememberRoute,
+} from '@/store/auth/actions'
+import { AuthReducer } from '@/store/auth/reducer'
 
 const STORE_NAME = 'AuthStore'
 
 const initialState = {
+	isReady: false,
+
 	token: null,
 	isLoggedIn: false,
 	justLoggedIn: false,
@@ -28,6 +34,12 @@ const initialState = {
 	hasGotProfile: false,
 	profile: {},
 	getProfileError: null,
+
+	isUpdatingToken: false,
+	hasUpdatedToken: false,
+	updateTokenError: null,
+
+	previousRoute: '/',
 }
 
 export const { Context: AuthContext, Provider: AuthProvider } =
@@ -41,11 +53,19 @@ export const { Context: AuthContext, Provider: AuthProvider } =
 			setReady,
 			finishLogin,
 			getProfile,
+			updateToken,
+			resetUpdateToken,
+			resetGetProfile,
+			rememberRoute,
 		},
 		initialState,
 		displayName: STORE_NAME,
 		shouldPersist: true,
 	})
+
+export const useAuthStore = () => {
+	return React.useContext(AuthContext)
+}
 
 export const initAuthState = () => {
 	const { setState } = useAuthStore()
@@ -53,12 +73,8 @@ export const initAuthState = () => {
 	React.useEffect(() => {
 		const persistState = getInitialState(STORE_NAME)
 		if (persistState) {
-			setState(persistState)
+			setState({ ...persistState, isReady: true })
 			ApiUtils.injectToken(persistState?.token)
 		}
 	}, [setState])
-}
-
-export const useAuthStore = () => {
-	return React.useContext(AuthContext)
 }

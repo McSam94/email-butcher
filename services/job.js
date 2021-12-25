@@ -10,6 +10,7 @@ const JobSrv = {
 	getJobs: params => get(`/job${convertObjToParams(params)}`),
 	editJob: (id, job) => patch(`/job/${id}`, job),
 	deleteJob: id => deleteMethod(`/job/${id}`),
+	updateToken: body => post('/updateToken', body),
 }
 
 export default JobSrv

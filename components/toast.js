@@ -10,10 +10,11 @@ const Toast = () => {
 			{toasts.length > 0 &&
 				toasts.map((toast, index) => (
 					<Snackbar
-						key={index}
+						key={`${toast.message}_${index}`}
 						open={!!toast}
 						autoHideDuration={4000}
 						onClose={() => closeToast(index)}
+						sx={{ bottom: 0 + index * 10 }}
 					>
 						<Alert
 							onClose={() => closeToast(index)}

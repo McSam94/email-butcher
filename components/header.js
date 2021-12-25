@@ -16,18 +16,20 @@ import Profile from '@/components/profile'
 
 const Header = () => {
 	const { push } = useRouter()
-	const { isLoggedIn } = useAuthStore()
+	const { isLoggedIn, rememberRoute } = useAuthStore()
 
 	const [isLoggingIn, setIsLoggingIn] = React.useState(false)
 
 	const onLogin = React.useCallback(async () => {
 		setIsLoggingIn(true)
+		rememberRoute(window.location.pathname)
+
 		const {
 			data: { url },
 		} = await AuthSrv.login()
 
 		push(url)
-	}, [push])
+	}, [rememberRoute, push])
 
 	return (
 		<Box

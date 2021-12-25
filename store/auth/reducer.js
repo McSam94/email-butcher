@@ -29,6 +29,8 @@ export const AuthReducer = (state, action) => {
 				...state,
 				isLoggedIn: false,
 				justLoggedIn: false,
+				profile: {},
+				hasGotProfile: false,
 				token: null,
 			}
 		case authAction.PROFILE.REQUEST:
@@ -56,6 +58,36 @@ export const AuthReducer = (state, action) => {
 				isGettingProfile: false,
 				hasGotProfile: false,
 				getProfileError: null,
+			}
+		case authAction.UPDATE_TOKEN.REQUEST:
+			return {
+				...state,
+				isUpdatingToken: true,
+			}
+		case authAction.UPDATE_TOKEN.SUCCESS:
+			return {
+				...state,
+				isUpdatingToken: false,
+				hasUpdatedToken: true,
+			}
+		case authAction.UPDATE_TOKEN.FAIL:
+			return {
+				...state,
+				isUpdatingToken: false,
+				hasUpdatedToken: false,
+				updateTokenError: action?.payload?.error,
+			}
+		case authAction.UPDATE_TOKEN.RESET:
+			return {
+				...state,
+				isUpdatingToken: false,
+				hasUpdatedToken: false,
+				updateTokenError: null,
+			}
+		case authAction.REMEMBER_ROUTE:
+			return {
+				...state,
+				previousRoute: action?.payload?.route,
 			}
 		default:
 			throw new Error(`Invalid Action ${action.type}`)

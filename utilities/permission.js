@@ -6,9 +6,7 @@ export const checkPermission = async () => {
 
 		if (!success) throw new Error(error)
 
-		if (data?.isAuthenticated) return true
-
-		return data?.url
+		return data
 	} catch (error) {
 		console.error(error) // eslint-disable-line no-console
 	}

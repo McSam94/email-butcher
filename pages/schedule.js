@@ -17,7 +17,7 @@ import DeleteDialog from '@/components/delete-dialog'
 import { useUiStore } from '@/store/ui'
 import TOAST from '@/constants/toast'
 import debounce from 'lodash/debounce'
-import useTokenReadyEffect from '@/hooks/useTokenReadyEffect'
+import useAuthReadyEffect from '@/hooks/useAuthReadyEffect'
 import { checkPermission } from '@/utilities/permission'
 import { useRouter } from 'next/router'
 import useDynamicRefs from 'use-dynamic-refs'
@@ -52,7 +52,7 @@ const Schedule = () => {
 		resetEditJob,
 	} = useJobStore()
 	const { toast } = useUiStore()
-	const { isLoggedIn } = useAuthStore()
+	const { isLoggedIn, rememberRoute } = useAuthStore()
 	const { push } = useRouter()
 	const [getRef, setRef] = useDynamicRefs()
 
@@ -83,20 +83,22 @@ const Schedule = () => {
 	)
 
 	const onRun = React.useCallback(
-		({ row }) => {
-			const hasGrantPermission = checkPermission()
-			if (hasGrantPermission) runJob(row.id)
-
-			push(hasGrantPermission)
+		async ({ row }) => {
+			const data = await checkPermission()
+			if (data.isAuthenticated) runJob(row.id)
+			else {
+				rememberRoute(window.location.pathname)
+				push(data.url)
+			}
 		},
-		[runJob, push]
+		[runJob, push, rememberRoute]
 	)
 
 	const onRecurringUpdate = React.useCallback(
 		(event, { row }) => {
 			const shouldRecurring = event.target.checked
 
-			editJob(row.id, { ...row, recurring: shouldRecurring })
+			editJob(row.id, { recurring: shouldRecurring })
 			setUpdatingJobId(row.id)
 		},
 		[editJob]
@@ -256,9 +258,9 @@ const Schedule = () => {
 		[getJobs]
 	)
 
-	useTokenReadyEffect(() => {
-		getJobs()
-	}, [getJobs])
+	useAuthReadyEffect(() => {
+		if (isLoggedIn) getJobs()
+	}, [isLoggedIn, getJobs])
 
 	React.useEffect(() => {
 		if (runJobError) toast('Something wrong running the job', TOAST.ERROR)
@@ -267,11 +269,12 @@ const Schedule = () => {
 	}, [runJobError, toast, resetRunJob])
 
 	React.useEffect(() => {
-		if (hasJobRan)
+		if (hasJobRan) {
 			toast('Successfully ran job. Please check your drive', TOAST.SUCCESS)
 
-		getJobs()
-		resetRunJob()
+			getJobs()
+			resetRunJob()
+		}
 	}, [hasJobRan, toast, getJobs, resetRunJob])
 
 	React.useEffect(() => {

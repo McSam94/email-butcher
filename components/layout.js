@@ -1,41 +1,18 @@
 import * as React from 'react'
-import { useRouter } from 'next/router'
 import Toast from '@/components/toast'
-import TOAST from '@/constants/toast'
-import { useAuthStore, initAuthState } from '@/store/auth'
-import { useUiStore, initUiState } from '@/store/ui'
+import { initAuthState, useAuthStore } from '@/store/auth'
+import { initUiState } from '@/store/ui'
 import Header from '@/components/header'
 import Config from '@/constants/config'
 import { Box } from '@mui/material'
 
 const Layout = ({ children }) => {
-	const { push } = useRouter()
-	const { login, isLoggedIn, justLoggedIn, finishLogin, getProfile } =
-		useAuthStore()
-	const { toast } = useUiStore()
+	const { isReady } = useAuthStore()
 
-	initAuthState()
-	initUiState()
-
-	React.useEffect(() => {
-		if (isLoggedIn) return
-
-		const params = window.location.hash.substring(1)
-		const token = new URLSearchParams(params).get('access_token')
-
-		if (!token) return
-
-		login(token)
-		push('/')
-	}, [push, login, isLoggedIn])
-
-	React.useEffect(() => {
-		if (justLoggedIn) {
-			toast('Success Login', TOAST.SUCCESS)
-			finishLogin()
-			getProfile()
-		}
-	}, [justLoggedIn, finishLogin, push, toast, getProfile])
+	if (!isReady) {
+		initAuthState()
+		initUiState()
+	}
 
 	return (
 		<>

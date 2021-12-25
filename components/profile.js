@@ -17,7 +17,8 @@ import LoadingButton from '@mui/lab/LoadingButton'
 
 const Profile = () => {
 	const { push } = useRouter()
-	const { profile, logout, isGettingProfile, hasGotProfile } = useAuthStore()
+	const { profile, logout, isGettingProfile, hasGotProfile, rememberRoute } =
+		useAuthStore()
 	const [anchorEl, setAnchorEl] = React.useState(null)
 	const [isLoggingOut, setIsLoggingOut] = React.useState(false)
 
@@ -38,13 +39,15 @@ const Profile = () => {
 
 	const onLogout = React.useCallback(async () => {
 		setIsLoggingOut(true)
+		rememberRoute(window.location.pathname)
+
 		const {
 			data: { url },
 		} = await AuthSrv.logout()
 
 		logout()
 		push(url)
-	}, [push, logout])
+	}, [push, logout, rememberRoute])
 
 	return (
 		<>
