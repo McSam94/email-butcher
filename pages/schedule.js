@@ -53,7 +53,7 @@ const Schedule = () => {
 	} = useJobStore()
 	const { toast } = useUiStore()
 	const { isLoggedIn, rememberRoute } = useAuthStore()
-	const { push } = useRouter()
+	const { push, events } = useRouter()
 	const [getRef, setRef] = useDynamicRefs()
 
 	const inputRef = React.useRef()
@@ -148,6 +148,7 @@ const Schedule = () => {
 				renderCell: param => (
 					<Switch
 						ref={setRef(param.row.id)}
+						key={param.row.id}
 						inputProps={{ 'aria-label': 'recurring-field' }}
 						defaultChecked={!!param.value}
 						disabled={runningJobId === param.row.id && isRunningJob}
@@ -269,6 +270,14 @@ const Schedule = () => {
 	}, [runJobError, toast, resetRunJob])
 
 	React.useEffect(() => {
+		if (isRunningJob)
+			toast(
+				'Job running in progress. It could takes up a few minutes.',
+				TOAST.INFO
+			)
+	}, [isRunningJob, toast])
+
+	React.useEffect(() => {
 		if (hasJobRan) {
 			toast('Successfully ran job. Please check your drive', TOAST.SUCCESS)
 
@@ -283,6 +292,13 @@ const Schedule = () => {
 			resetGetJobs()
 		}
 	}, [getJobError, toast, resetGetJobs])
+
+	React.useEffect(() => {
+		if (hasEditedJob) {
+			toast('Successfully updated field', TOAST.SUCCESS)
+			resetEditJob()
+		}
+	}, [hasEditedJob, toast, resetEditJob])
 
 	React.useEffect(() => {
 		if (editJobError) {
@@ -303,6 +319,27 @@ const Schedule = () => {
 			resetDeleteJob()
 		}
 	}, [toast, hasDeletedJob, removeSelectedJob, resetDeleteJob])
+
+	React.useEffect(() => {
+		const message =
+			'Are you sure you want to leave? You are in the middle of running a job. Leaving could result in abandoning your current running job'
+		if (isRunningJob) {
+			events.on('routeChangeStart', url => {
+				const shouldContinue = window.confirm(message)
+
+				if (!shouldContinue) {
+					events.emit('routeChangeError')
+					throw `Route change to ${url} aborted`
+				}
+			})
+			window.onbeforeunload = function () {
+				return message
+			}
+		} else {
+			events.off('routeChangeStart')
+			window.onbeforeunload = null
+		}
+	}, [events, isRunningJob])
 
 	React.useEffect(() => {
 		if (hasDeletedJob || hasCreatedJob || hasEditedJob) getJobs()

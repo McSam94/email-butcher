@@ -52,7 +52,7 @@ export const { Context: JobContext, Provider: JobProvider } =
 			createdJob: null,
 			createJobError: null,
 
-			isJobRunning: false,
+			isRunningJob: false,
 			runningJobId: null,
 			hasJobRan: false,
 			ranJob: null,
