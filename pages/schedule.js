@@ -23,6 +23,9 @@ import { useRouter } from 'next/router'
 import useDynamicRefs from 'use-dynamic-refs'
 import { useAuthStore } from '@/store/auth'
 
+const LEAVE_MESSAGE =
+	'Are you sure you want to leave? You are in the middle of running a job. Leaving could result in abandoning your current running job'
+
 const Schedule = () => {
 	const {
 		jobs,
@@ -246,6 +249,8 @@ const Schedule = () => {
 
 	const onSearch = React.useCallback(
 		debounce(({ target: { value: search } }) => {
+			if (!search) return
+
 			getJobs(search)
 		}, 500),
 		[getJobs]
@@ -253,10 +258,24 @@ const Schedule = () => {
 
 	const clearSearch = React.useCallback(
 		debounce(() => {
+			if (!inputRef.current.value) return
+
 			getJobs()
 			inputRef.current.value = ''
 		}),
 		[getJobs]
+	)
+
+	const routeChangeHandler = React.useCallback(
+		url => {
+			const shouldContinue = window.confirm(LEAVE_MESSAGE)
+
+			if (!shouldContinue) {
+				events.emit('routeChangeError')
+				throw `Route change to ${url} aborted`
+			}
+		},
+		[events]
 	)
 
 	useAuthReadyEffect(() => {
@@ -321,25 +340,16 @@ const Schedule = () => {
 	}, [toast, hasDeletedJob, removeSelectedJob, resetDeleteJob])
 
 	React.useEffect(() => {
-		const message =
-			'Are you sure you want to leave? You are in the middle of running a job. Leaving could result in abandoning your current running job'
 		if (isRunningJob) {
-			events.on('routeChangeStart', url => {
-				const shouldContinue = window.confirm(message)
-
-				if (!shouldContinue) {
-					events.emit('routeChangeError')
-					throw `Route change to ${url} aborted`
-				}
-			})
+			events.on('routeChangeStart', routeChangeHandler)
 			window.onbeforeunload = function () {
-				return message
+				return LEAVE_MESSAGE
 			}
 		} else {
-			events.off('routeChangeStart')
+			events.off('routeChangeStart', routeChangeHandler)
 			window.onbeforeunload = null
 		}
-	}, [events, isRunningJob])
+	}, [events, isRunningJob, routeChangeHandler])
 
 	React.useEffect(() => {
 		if (hasDeletedJob || hasCreatedJob || hasEditedJob) getJobs()
