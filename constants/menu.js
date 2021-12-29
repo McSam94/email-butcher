@@ -3,8 +3,8 @@ export default Object.freeze({
 		label: 'Schedule',
 		link: '/schedule',
 	},
-	SETTINGS: {
-		label: 'Settings',
-		link: '/settings',
-	},
+	// SETTINGS: {
+	// 	label: 'Settings',
+	// 	link: '/settings',
+	// },
 })

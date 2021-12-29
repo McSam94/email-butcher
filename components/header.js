@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Box, List, ListItem, ListItemIcon, ListItemText } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import GoogleIcon from '@mui/icons-material/Google'
-import PriceIcon from '@mui/icons-material/PriceChange'
+// import PriceIcon from '@mui/icons-material/PriceChange'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import capitalize from 'lodash/capitalize'
@@ -87,12 +87,12 @@ const Header = () => {
 						height: '100%',
 					}}
 				>
-					<ListItem button sx={{ height: '100%', mr: 2 }}>
+					{/* <ListItem button sx={{ height: '100%', mr: 2 }}>
 						<ListItemIcon>
 							<PriceIcon />
 						</ListItemIcon>
 						<ListItemText>Pricing</ListItemText>
-					</ListItem>
+					</ListItem> */}
 					<Profile />
 				</Box>
 			)}

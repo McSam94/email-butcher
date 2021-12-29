@@ -141,10 +141,7 @@ const Main = () => {
 							label="Sender Email Address"
 							variant="outlined"
 							size="small"
-							helperText={
-								errors?.email?.message ??
-								'Sender email address to filter email that you want to extract'
-							}
+							helperText={errors?.email?.message ?? ''}
 						/>
 						<Box sx={{ mt: 4 }}>
 							<Typography
@@ -163,10 +160,7 @@ const Main = () => {
 								label="Folder Name"
 								variant="outlined"
 								size="small"
-								helperText={
-									errors?.folderName?.message ??
-									"Folder will be created at your Google Drive's root path"
-								}
+								helperText={errors?.folderName?.message ?? ''}
 							/>
 						</Box>
 						{isLoggedIn ? (
