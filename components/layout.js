@@ -5,13 +5,15 @@ import { initUiState } from '@/store/ui'
 import Header from '@/components/header'
 import Config from '@/constants/config'
 import { Box } from '@mui/material'
+import ApiUtils from '@/services/index'
 
 const Layout = ({ children }) => {
-	const { isReady } = useAuthStore()
+	const { isReady, logout } = useAuthStore()
 
 	if (!isReady) {
 		initAuthState()
 		initUiState()
+		ApiUtils.injectLogout(logout)
 	}
 
 	return (

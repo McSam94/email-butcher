@@ -60,7 +60,7 @@ const Loading = () => {
 
 	useAuthReadyEffect(() => {
 		if (!isLoggedIn) push(previousRoute)
-	}, [])
+	}, [isLoggedIn, push, previousRoute])
 
 	React.useEffect(() => {
 		if (hasUpdatedToken) {

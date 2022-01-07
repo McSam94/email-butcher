@@ -307,7 +307,6 @@ const Schedule = () => {
 
 	React.useEffect(() => {
 		if (getJobError) {
-			toast('Something went wrong. Please try again.', TOAST.ERROR)
 			resetGetJobs()
 		}
 	}, [getJobError, toast, resetGetJobs])
