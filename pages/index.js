@@ -1,5 +1,12 @@
 import * as React from 'react'
-import { Box, Divider, TextField, Typography } from '@mui/material'
+import {
+	Box,
+	Divider,
+	IconButton,
+	InputAdornment,
+	TextField,
+	Typography,
+} from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import Head from 'next/head'
 import Logo from '@/components/logo'
@@ -11,9 +18,12 @@ import { useUiStore } from '@/store/ui'
 import TOAST from '@/constants/toast'
 import RunIcon from '@mui/icons-material/DirectionsRun'
 import GoogleIcon from '@mui/icons-material/Google'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import { useAuthStore } from '@/store/auth'
 import AuthSrv from '@/services/auth'
 import { useRouter } from 'next/router'
+import { generateMailQuery } from '@/utilities/mail-query'
 
 const Main = () => {
 	const { push } = useRouter()
@@ -27,13 +37,14 @@ const Main = () => {
 	const { toast } = useUiStore()
 	const { isLoggedIn } = useAuthStore()
 
+	const [isExpanded, setIsExpand] = React.useState(false)
 	const [isLoggingIn, setIsLoggingIn] = React.useState(false)
 
 	const jobSchema = React.useMemo(
 		() =>
 			yup.object().shape({
 				folderName: yup.string().required('Folder name is required'),
-				email: yup.string().required('Email is required'),
+				fromEmail: yup.string().required('Email is required'),
 			}),
 		[]
 	)
@@ -47,14 +58,21 @@ const Main = () => {
 		resolver: yupResolver(jobSchema),
 	})
 
+	const onStepOneExpand = React.useCallback(() => {
+		setIsExpand(prevState => !prevState)
+	}, [])
+
 	const onSubmit = React.useCallback(
-		({ folderName, email }) => {
+		({ folderName, fromEmail, toEmail, cc, bcc, subject, label }) => {
 			instantJob({
 				folderName,
-				mailQuery: `from:${email},has:attachment`,
+				mailQuery: generateMailQuery({
+					from: fromEmail,
+					...(isExpanded ? { to: toEmail, cc, bcc, subject, label } : {}),
+				}),
 			})
 		},
-		[instantJob]
+		[instantJob, isExpanded]
 	)
 
 	const onSignUp = React.useCallback(async () => {
@@ -104,10 +122,6 @@ const Main = () => {
 						display: 'flex',
 						flexDirection: 'column',
 					},
-					'& form .MuiTextField-root': {
-						marginTop: 2,
-						width: '100%',
-					},
 				}}
 			>
 				<Box sx={{ maxWidth: '420px', alignSelf: 'center' }}>
@@ -136,13 +150,86 @@ const Main = () => {
 							attachment
 						</Typography>
 						<TextField
-							{...register('email')}
-							error={!!errors?.email}
+							{...register('fromEmail')}
+							error={!!errors?.fromEmail}
 							label="Sender Email Address"
-							variant="outlined"
 							size="small"
-							helperText={errors?.email?.message ?? ''}
+							helperText={errors?.fromEmail?.message ?? ''}
+							inputProps={{
+								endAdornment: (
+									<InputAdornment position="end">@gmail.com</InputAdornment>
+								),
+							}}
 						/>
+						<Box sx={{ display: 'flex', flexDirection: 'column' }}>
+							<Box
+								sx={{
+									display: 'flex',
+									flexDirection: 'row',
+									alignItems: 'center',
+									justifyContent: 'center',
+								}}
+							>
+								<Divider sx={{ width: 120, height: 2 }} />
+								<IconButton onClick={onStepOneExpand}>
+									{isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+								</IconButton>
+								<Divider sx={{ width: 120, height: 2 }} />
+							</Box>
+							{!isExpanded && (
+								<Typography variant="caption" sx={{ color: 'text.secondary' }}>
+									Advance Query
+								</Typography>
+							)}
+						</Box>
+						{isExpanded && (
+							<>
+								<TextField
+									{...register('toEmail')}
+									sx={{ margin: '12px 0' }}
+									label="Recipient Email Address"
+									size="small"
+									inputProps={{
+										endAdornment: (
+											<InputAdornment position="end">@gmail.com</InputAdornment>
+										),
+									}}
+								/>
+								<Box
+									sx={{
+										margin: '12px 0',
+										display: 'flex',
+										flexDirection: 'row',
+										justifyContent: 'space-between',
+									}}
+								>
+									<TextField
+										{...register('cc')}
+										sx={{ width: '45%' }}
+										label="Carbon Copy"
+										size="small"
+									/>
+									<TextField
+										{...register('bcc')}
+										sx={{ width: '45%' }}
+										label="Blind Carbon Copy"
+										size="small"
+									/>
+								</Box>
+								<TextField
+									{...register('subject')}
+									sx={{ margin: '12px 0' }}
+									label="Words in Subject"
+									size="small"
+								/>
+								<TextField
+									{...register('label')}
+									sx={{ margin: '12px 0' }}
+									label="Email's Label"
+									size="small"
+								/>
+							</>
+						)}
 						<Box sx={{ mt: 4 }}>
 							<Typography
 								variant="h4"
@@ -156,9 +243,9 @@ const Main = () => {
 							</Typography>
 							<TextField
 								{...register('folderName')}
+								sx={{ width: '100%' }}
 								error={!!errors?.folderName}
 								label="Folder Name"
-								variant="outlined"
 								size="small"
 								helperText={errors?.folderName?.message ?? ''}
 							/>
