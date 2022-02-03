@@ -390,7 +390,7 @@ const Schedule = () => {
 							onChange={onSearch}
 							placeholder="Search"
 							startAdornment={<SearchIcon />}
-							endAdornment={
+							endadornment={
 								<ClearIcon
 									color="action"
 									sx={{ cursor: 'pointer' }}

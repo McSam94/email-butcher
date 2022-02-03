@@ -24,6 +24,7 @@ import { useAuthStore } from '@/store/auth'
 import AuthSrv from '@/services/auth'
 import { useRouter } from 'next/router'
 import { generateMailQuery } from '@/utilities/mail-query'
+import { checkPermission } from '@/utilities/permission'
 
 const Main = () => {
 	const { push } = useRouter()
@@ -35,7 +36,7 @@ const Main = () => {
 		resetInstantJob,
 	} = useJobStore()
 	const { toast } = useUiStore()
-	const { isLoggedIn } = useAuthStore()
+	const { isLoggedIn, rememberRoute } = useAuthStore()
 
 	const [isExpanded, setIsExpand] = React.useState(false)
 	const [isLoggingIn, setIsLoggingIn] = React.useState(false)
@@ -63,16 +64,22 @@ const Main = () => {
 	}, [])
 
 	const onSubmit = React.useCallback(
-		({ folderName, fromEmail, toEmail, cc, bcc, subject, label }) => {
-			instantJob({
-				folderName,
-				mailQuery: generateMailQuery({
-					from: fromEmail,
-					...(isExpanded ? { to: toEmail, cc, bcc, subject, label } : {}),
-				}),
-			})
+		async ({ folderName, fromEmail, toEmail, cc, bcc, subject, label }) => {
+			const data = await checkPermission()
+			if (data.isAuthenticated)
+				instantJob({
+					folderName,
+					mailQuery: generateMailQuery({
+						from: fromEmail,
+						...(isExpanded ? { to: toEmail, cc, bcc, subject, label } : {}),
+					}),
+				})
+			else {
+				rememberRoute(window.location.pathname)
+				push(data.url)
+			}
 		},
-		[instantJob, isExpanded]
+		[instantJob, isExpanded, rememberRoute, push]
 	)
 
 	const onSignUp = React.useCallback(async () => {
@@ -156,7 +163,7 @@ const Main = () => {
 							size="small"
 							helperText={errors?.fromEmail?.message ?? ''}
 							inputProps={{
-								endAdornment: (
+								endadornment: (
 									<InputAdornment position="end">@gmail.com</InputAdornment>
 								),
 							}}
@@ -190,7 +197,7 @@ const Main = () => {
 									label="Recipient Email Address"
 									size="small"
 									inputProps={{
-										endAdornment: (
+										endadornment: (
 											<InputAdornment position="end">@gmail.com</InputAdornment>
 										),
 									}}
