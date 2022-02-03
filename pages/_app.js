@@ -3,7 +3,7 @@ import Providers from '@/components/providers'
 import { ThemeProvider } from '@mui/material'
 import { DefaultSeo } from 'next-seo'
 import SEO from '../next-seo.config'
-import theme from './_theme'
+import theme from '../styles/_theme'
 import '../styles/globals.css'
 // import { debugContextDevtool } from 'react-context-devtool';
 
