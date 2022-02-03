@@ -247,6 +247,7 @@ const Schedule = () => {
 		[updatePageSize]
 	)
 
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const onSearch = React.useCallback(
 		debounce(({ target: { value: search } }) => {
 			if (!search) return
@@ -256,6 +257,7 @@ const Schedule = () => {
 		[getJobs]
 	)
 
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const clearSearch = React.useCallback(
 		debounce(() => {
 			if (!inputRef.current.value) return

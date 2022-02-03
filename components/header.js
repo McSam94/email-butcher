@@ -110,6 +110,7 @@ const Header = () => {
 							color: 'white',
 							height: '40px',
 							borderRadius: 0,
+							border: 0,
 							'& .MuiButton-startIcon': {
 								marginLeft: 0,
 								marginRight: '12px',
@@ -118,6 +119,7 @@ const Header = () => {
 								backgroundColor: '#4285F4',
 								color: 'white',
 								boxShadow: 2,
+								border: 0,
 							},
 						}}
 					>

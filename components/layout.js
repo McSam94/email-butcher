@@ -6,6 +6,7 @@ import Header from '@/components/header'
 import Config from '@/constants/config'
 import { Box } from '@mui/material'
 import ApiUtils from '@/services/index'
+import Footer from './footer'
 
 const Layout = ({ children }) => {
 	const { isReady, logout } = useAuthStore()
@@ -28,10 +29,10 @@ const Layout = ({ children }) => {
 					width: '100vw',
 					bgcolor: 'grey.100',
 					overflowY: 'scroll',
-					p: 2,
 				}}
 			>
-				{children}
+				<Box sx={{ p: 2 }}>{children}</Box>
+				<Footer />
 			</Box>
 			<Toast />
 		</>
