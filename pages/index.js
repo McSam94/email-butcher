@@ -111,7 +111,7 @@ const Main = () => {
 	return (
 		<>
 			<Head>
-				<title>Email Butler</title>
+				<title>Email Butcher</title>
 				<meta name="description" content="Email extraction automation" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>

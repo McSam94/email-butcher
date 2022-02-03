@@ -1,5 +1,5 @@
 {
-	"name": "email-butler",
+	"name": "email-butcher",
 	"private": true,
 	"scripts": {
 		"prepare": "husky install .husky",

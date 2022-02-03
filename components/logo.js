@@ -33,7 +33,7 @@ const Logo = ({ size }) => {
 			variant={variant}
 			onClick={onLogoClick}
 		>
-			Email Butler
+			Email Butcher
 		</Typography>
 	)
 }

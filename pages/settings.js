@@ -5,7 +5,7 @@ const Settings = () => {
 	return (
 		<>
 			<Head>
-				<title>Email Butler | Settings</title>
+				<title>Email Butcher | Settings</title>
 				<meta name="description" content="Settings Email Extraction" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>

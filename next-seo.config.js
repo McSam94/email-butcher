@@ -1,7 +1,7 @@
 const SEO = {
-	title: 'Email Butler',
-	titleTemplate: ' %s | Email Butler',
-	defaultTitle: 'Email Butler',
+	title: 'Email Butcher',
+	titleTemplate: ' %s | Email Butcher',
+	defaultTitle: 'Email Butcher',
 	description: 'Automation Email Extractor',
 }
 
