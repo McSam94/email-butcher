@@ -57,8 +57,12 @@ const Header = () => {
 					{Object.values(MENU).map(({ label, link }) => (
 						<Link href={link} passHref key={label}>
 							<ListItem button>
-								<ListItemIcon>{getMenuIcon(label)}</ListItemIcon>
-								<ListItemText>{capitalize(label)}</ListItemText>
+								<ListItemIcon sx={{ minWidth: 'auto', marginRight: '12px' }}>
+									{getMenuIcon(label)}
+								</ListItemIcon>
+								<ListItemText sx={{ color: 'secondary.main' }}>
+									{capitalize(label)}
+								</ListItemText>
 							</ListItem>
 						</Link>
 					))}
@@ -92,7 +96,7 @@ const Header = () => {
 								marginLeft: 0,
 								marginRight: '12px',
 							},
-							'&:hover': {
+							'&:hover, &.Mui-disabled': {
 								backgroundColor: '#4285F4',
 								color: 'white',
 								boxShadow: 2,

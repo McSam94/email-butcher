@@ -131,9 +131,12 @@ const Main = () => {
 					},
 				}}
 			>
-				<Box sx={{ maxWidth: '420px', alignSelf: 'center' }}>
+				<Box sx={{ maxWidth: '480px', alignSelf: 'center' }}>
 					<Logo size="l" />
-					<Typography variant="h6" sx={{ color: 'primary.light' }}>
+					<Typography
+						variant="h6"
+						sx={{ color: 'secondary.main', fontWeight: 'bold' }}
+					>
 						Sit veniam esse esse culpa qui cillum sunt dolore.
 					</Typography>
 				</Box>
@@ -148,6 +151,7 @@ const Main = () => {
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<Typography
 							variant="h4"
+							color="secondary"
 							sx={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
 						>
 							Step 1
@@ -240,6 +244,7 @@ const Main = () => {
 						<Box sx={{ mt: 4 }}>
 							<Typography
 								variant="h4"
+								color="secondary"
 								sx={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
 							>
 								Step 2

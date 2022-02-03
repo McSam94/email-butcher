@@ -11,11 +11,13 @@ const ContentHeader = ({ title, description }) => {
 				py: 4,
 			}}
 		>
-			<Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+			<Typography variant="h4" color="secondary" sx={{ fontWeight: 'bold' }}>
 				{title}
 			</Typography>
 			{description && (
-				<Typography variant="subtitle1">{description}</Typography>
+				<Typography variant="subtitle1" color="secondary.light">
+					{description}
+				</Typography>
 			)}
 		</Box>
 	)

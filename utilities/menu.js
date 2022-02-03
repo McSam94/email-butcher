@@ -8,8 +8,8 @@ export const getMenuIcon = menu => {
 		// case MENU.SETTINGS.label:
 		// 	return <SettingIcon />
 		case MENU.SCHEDULE.label:
-			return <ScheduleIcon />
+			return <ScheduleIcon color="secondary" />
 		default:
-			return <DummyIcon />
+			return <DummyIcon color="secondary" />
 	}
 }
