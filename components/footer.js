@@ -1,9 +1,11 @@
+import useResponsive from '@/hooks/useResponsive'
 import { Box, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 
 const Footer = () => {
 	const { push } = useRouter()
+	const { isMobile } = useResponsive()
 
 	const goToPrivacy = React.useCallback(() => {
 		push(process.env.NEXT_PUBLIC_PRIVACY_URL)
@@ -13,9 +15,9 @@ const Footer = () => {
 		<Box
 			sx={{
 				display: 'flex',
-				flexDirection: 'row',
+				flexDirection: isMobile ? 'column' : 'row',
 				justifyContent: 'space-between',
-				alignItems: 'center',
+				alignItems: isMobile ? 'flex-start' : 'center',
 				backgroundColor: 'grey.200',
 				p: 4,
 			}}
