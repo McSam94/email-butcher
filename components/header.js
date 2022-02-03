@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Box, List, ListItem, ListItemIcon, ListItemText } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
-import GoogleIcon from '@mui/icons-material/Google'
 // import PriceIcon from '@mui/icons-material/PriceChange'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -13,6 +12,7 @@ import { useAuthStore } from '@/store/auth'
 import Config from '@/constants/config'
 import Logo from '@/components/logo'
 import Profile from '@/components/profile'
+import Image from 'next/image'
 
 const Header = () => {
 	const { push } = useRouter()
@@ -70,11 +70,36 @@ const Header = () => {
 						disableRipple
 						loading={isLoggingIn}
 						loadingPosition="start"
-						startIcon={<GoogleIcon />}
+						startIcon={
+							<Image
+								src="/images/google_icon.svg"
+								width={40}
+								height={40}
+								alt="google"
+							/>
+						}
 						variant="outlined"
 						onClick={onLogin}
+						sx={{
+							textTransform: 'none',
+							padding: 0,
+							paddingRight: '8px',
+							backgroundColor: '#4285F4',
+							color: 'white',
+							height: '40px',
+							borderRadius: 0,
+							'& .MuiButton-startIcon': {
+								marginLeft: 0,
+								marginRight: '12px',
+							},
+							'&:hover': {
+								backgroundColor: '#4285F4',
+								color: 'white',
+								boxShadow: 2,
+							},
+						}}
 					>
-						Login / SignUp
+						Sign in with Google
 					</LoadingButton>
 				</Box>
 			)}
