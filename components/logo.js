@@ -1,10 +1,12 @@
+import useResponsive from '@/hooks/useResponsive'
 import { Box, Typography } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 
-const Logo = ({ size }) => {
+const Logo = ({ size, onlyLogo = false }) => {
 	const { push } = useRouter()
+	const { isMobile } = useResponsive()
 
 	const variant = React.useMemo(() => {
 		switch (size) {
@@ -37,7 +39,7 @@ const Logo = ({ size }) => {
 	}, [push])
 
 	return (
-		<Box sx={{ display: 'flex', flexDirection: 'row' }}>
+		<Box sx={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row' }}>
 			<Image
 				src="/images/logo.svg"
 				height={logoSize}
@@ -45,19 +47,21 @@ const Logo = ({ size }) => {
 				layout="intrinsic"
 				alt="logo"
 			/>
-			<Typography
-				sx={{
-					marginLeft: '12px',
-					fontWeight: 'bold',
-					fontFamily: 'sans-serif',
-					color: 'primary.main',
-					cursor: 'pointer',
-				}}
-				variant={variant}
-				onClick={onLogoClick}
-			>
-				Email Butcher
-			</Typography>
+			{!onlyLogo && (
+				<Typography
+					sx={{
+						marginLeft: '12px',
+						fontWeight: 'bold',
+						fontFamily: 'sans-serif',
+						color: 'primary.main',
+						cursor: 'pointer',
+					}}
+					variant={variant}
+					onClick={onLogoClick}
+				>
+					Email Butcher
+				</Typography>
+			)}
 		</Box>
 	)
 }

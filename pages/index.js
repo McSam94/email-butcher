@@ -141,12 +141,6 @@ const Main = () => {
 					</Typography>
 				</Box>
 				<Divider sx={{ mt: 12, mb: 10, width: '80%', alignSelf: 'center' }} />
-				{/* <Typography
-					variant="h4"
-					sx={{ color: 'secondary.light', fontWeight: 'bold' }}
-				>
-					Try Now for Free
-				</Typography> */}
 				<Box sx={{ maxWidth: '420px', alignSelf: 'center' }}>
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<Typography

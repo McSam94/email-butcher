@@ -1,5 +1,12 @@
 import * as React from 'react'
-import { Box, List, ListItem, ListItemIcon, ListItemText } from '@mui/material'
+import {
+	Box,
+	List,
+	ListItem,
+	ListItemIcon,
+	ListItemText,
+	Tooltip,
+} from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 // import PriceIcon from '@mui/icons-material/PriceChange'
 import Link from 'next/link'
@@ -13,10 +20,12 @@ import Config from '@/constants/config'
 import Logo from '@/components/logo'
 import Profile from '@/components/profile'
 import Image from 'next/image'
+import useResponsive from '@/hooks/useResponsive'
 
 const Header = () => {
 	const { push } = useRouter()
 	const { isLoggedIn, rememberRoute } = useAuthStore()
+	const { isMobile } = useResponsive()
 
 	const [isLoggingIn, setIsLoggingIn] = React.useState(false)
 
@@ -52,18 +61,27 @@ const Header = () => {
 					height: '100%',
 				}}
 			>
-				<Logo size="s" />
+				<Logo size="s" onlyLogo={isMobile} />
 				<List sx={{ display: 'inline-flex', py: 0, height: '100%', ml: 2 }}>
 					{Object.values(MENU).map(({ label, link }) => (
 						<Link href={link} passHref key={label}>
-							<ListItem button>
-								<ListItemIcon sx={{ minWidth: 'auto', marginRight: '12px' }}>
-									{getMenuIcon(label)}
-								</ListItemIcon>
-								<ListItemText sx={{ color: 'secondary.main' }}>
-									{capitalize(label)}
-								</ListItemText>
-							</ListItem>
+							<Tooltip title={isMobile ? capitalize(label) : ''}>
+								<ListItem button>
+									<ListItemIcon
+										sx={{
+											minWidth: 'auto',
+											marginRight: isMobile ? 0 : '12px',
+										}}
+									>
+										{getMenuIcon(label)}
+									</ListItemIcon>
+									{!isMobile && (
+										<ListItemText sx={{ color: 'secondary.main' }}>
+											{capitalize(label)}
+										</ListItemText>
+									)}
+								</ListItem>
+							</Tooltip>
 						</Link>
 					))}
 				</List>

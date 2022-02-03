@@ -3,15 +3,18 @@ import { Box, Modal, IconButton } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import Form from '@/components/schedule/add-edit/form'
 import ContentHeader from '@/components/content-header'
+import useResponsive from '@/hooks/useResponsive'
 
 const AddEdit = ({ isAdd, isOpen, onClose }) => {
+	const { isMobile } = useResponsive()
+
 	return (
 		<Modal open={isOpen} onClose={onClose}>
 			<Box
 				sx={{
 					bgcolor: 'background.paper',
-					width: '40%',
-					height: '60%',
+					width: isMobile ? '100%' : '40%',
+					height: isMobile ? '100%' : '60%',
 					left: '50%',
 					top: '50%',
 					transform: 'translate(-50%, -50%)',

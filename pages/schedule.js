@@ -371,6 +371,7 @@ const Schedule = () => {
 				<ContentHeader
 					title="Schedule"
 					description="Schedule periodically to exact attachment from predefined setting"
+					style={{ py: 4 }}
 				/>
 				<Divider sx={{ my: 2 }} />
 				{isLoggedIn && (

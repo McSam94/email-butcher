@@ -11,8 +11,11 @@ import ContentHeader from '@/components/content-header'
 import dayjs from 'dayjs'
 import Config from '@/constants/config'
 import Files from '@/components/schedule/details/files'
+import useResponsive from '@/hooks/useResponsive'
 
 const Results = ({ job: { name, jobResults: results } }) => {
+	const { isMobile } = useResponsive()
+
 	return (
 		<>
 			<ContentHeader title={`${name}'s results`} />
@@ -48,17 +51,19 @@ const Results = ({ job: { name, jobResults: results } }) => {
 								{dayjs(result.createdAt).format(Config.DATE_FORMAT)}
 							</ListItemText>
 						</Box>
-						<Box
-							sx={{
-								display: 'flex',
-								flexDirection: 'row',
-								ml: 4,
-								width: 'calc(100% - 240px)',
-								overflowX: 'scroll',
-							}}
-						>
-							<Files files={result.files} />
-						</Box>
+						{!isMobile && (
+							<Box
+								sx={{
+									display: 'flex',
+									flexDirection: 'row',
+									ml: 4,
+									width: 'calc(100% - 240px)',
+									overflowX: 'scroll',
+								}}
+							>
+								<Files files={result.files} />
+							</Box>
+						)}
 					</ListItem>
 				))}
 			</List>

@@ -21,7 +21,6 @@ specifiers:
   next-sitemap: ^1.6.203
   prettier: ^2.5.1
   react: 17.0.2
-  react-context-devtool: ^2.0.3
   react-dom: 17.0.2
   react-hook-form: ^7.22.2
   use-dynamic-refs: ^1.0.0
@@ -41,7 +40,6 @@ dependencies:
   next: 12.0.7_react-dom@17.0.2+react@17.0.2
   next-seo: 4.29.0_d837ce8f3acb2f60f8b7454672a9bcea
   react: 17.0.2
-  react-context-devtool: 2.0.3
   react-dom: 17.0.2_react@17.0.2
   react-hook-form: 7.25.3_react@17.0.2
   use-dynamic-refs: 1.0.0_react@17.0.2
@@ -3179,11 +3177,6 @@ packages:
       http-errors: 1.7.3
       iconv-lite: 0.4.24
       unpipe: 1.0.0
-    dev: false
-
-  /react-context-devtool/2.0.3:
-    resolution: {integrity: sha512-GVpDaQqRsVoofcbViVWelWTUHNjk4CAA81ZU+TVjEwZUTjhwOgKDM4t6yGfLBoEEG8PFYKbp9QqzyWw2BASe5Q==}
-    deprecated: Package no longer needed. Please download directly from the Chrome Store https://chrome.google.com/webstore/detail/react-context-devtool/oddhnidmicpefilikhgeagedibnefkcf
     dev: false
 
   /react-dom/17.0.2_react@17.0.2:
