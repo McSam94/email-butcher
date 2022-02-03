@@ -137,7 +137,7 @@ const Main = () => {
 						variant="h6"
 						sx={{ color: 'secondary.main', fontWeight: 'bold' }}
 					>
-						Sit veniam esse esse culpa qui cillum sunt dolore.
+						Finding that piece of meat ✉️ you want.
 					</Typography>
 				</Box>
 				<Divider sx={{ mt: 12, mb: 10, width: '80%', alignSelf: 'center' }} />
