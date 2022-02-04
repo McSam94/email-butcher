@@ -39,7 +39,14 @@ const Logo = ({ size, onlyLogo = false }) => {
 	}, [push])
 
 	return (
-		<Box sx={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row' }}>
+		<Box
+			sx={{
+				display: 'flex',
+				flexDirection: isMobile ? 'column' : 'row',
+				cursor: 'pointer',
+			}}
+			onClick={onLogoClick}
+		>
 			<Image
 				src="/images/logo.svg"
 				height={logoSize}
@@ -54,10 +61,8 @@ const Logo = ({ size, onlyLogo = false }) => {
 						fontWeight: 'bold',
 						fontFamily: 'sans-serif',
 						color: 'primary.main',
-						cursor: 'pointer',
 					}}
 					variant={variant}
-					onClick={onLogoClick}
 				>
 					Email Butcher
 				</Typography>

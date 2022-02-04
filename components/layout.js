@@ -31,7 +31,15 @@ const Layout = ({ children }) => {
 					overflowY: 'scroll',
 				}}
 			>
-				<Box sx={{ p: 2, height: `100%` }}>{children}</Box>
+				<Box
+					sx={{
+						p: 2,
+						flex: 1,
+						display: 'flex',
+					}}
+				>
+					{children}
+				</Box>
 				<Footer />
 			</Box>
 			<Toast />

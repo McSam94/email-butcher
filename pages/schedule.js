@@ -22,6 +22,7 @@ import { checkPermission } from '@/utilities/permission'
 import { useRouter } from 'next/router'
 import useDynamicRefs from 'use-dynamic-refs'
 import { useAuthStore } from '@/store/auth'
+import Config from '@/constants/config'
 
 const LEAVE_MESSAGE =
 	'Are you sure you want to leave? You are in the middle of running a job. Leaving could result in abandoning your current running job'
@@ -367,7 +368,8 @@ const Schedule = () => {
 				sx={{
 					display: 'flex',
 					flexDirection: 'column',
-					height: '100%',
+					height: `calc(100vh - ${Config.HEADER_HEIGHT}px - 32px)`,
+					width: '100%',
 				}}
 			>
 				<ContentHeader
