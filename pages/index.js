@@ -3,8 +3,8 @@ import { Box, Divider } from '@mui/material'
 import Head from 'next/head'
 import Landing from '@/components/home/landing'
 import Instant from '@/components/home/instant'
-import HowItWorks from '@/components/home/how-it-works'
 import About from '@/components/home/about'
+import Coffee from '@/components/home/coffee'
 
 const Main = () => {
 	return (
@@ -32,11 +32,11 @@ const Main = () => {
 			>
 				<Landing />
 				<Divider sx={{ mt: 12, mb: 10, width: '80%', alignSelf: 'center' }} />
-				<HowItWorks />
+				<About />
 				<Divider sx={{ mt: 12, mb: 10, width: '80%', alignSelf: 'center' }} />
 				<Instant />
 				<Divider sx={{ mt: 12, mb: 10, width: '80%', alignSelf: 'center' }} />
-				<About />
+				<Coffee />
 			</Box>
 		</>
 	)
