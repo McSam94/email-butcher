@@ -1,6 +1,7 @@
 {
-  "semi": false,
-  "singleQuote": true,
-  "arrowParens": "avoid",
-  "useTabs": true
+	"semi": false,
+	"singleQuote": true,
+	"arrowParens": "avoid",
+	"useTabs": true,
+	"printWidth": 80
 }
