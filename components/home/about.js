@@ -8,7 +8,13 @@ const About = () => {
 
 	return (
 		<Box
-			sx={{ display: 'flex', flexDirection: 'column', px: isMobile ? 0 : 12 }}
+			sx={{
+				display: 'flex',
+				flexDirection: 'column',
+				px: isMobile ? 0 : 12,
+				maxWidth: 1200,
+				alignSelf: 'center',
+			}}
 		>
 			<Typography
 				variant="h4"
@@ -40,18 +46,18 @@ const About = () => {
 			<CaptionRow
 				image="extract"
 				title="Easy & Simple"
-				description="Tell us the bank's email address that sent you the statement and a name of directory you wanted to create in your google drive"
+				description="Tell us the bank's email address that sent you the statement and a name of directory you wanted to create in your Google Drive"
 			/>
 			<CaptionRow
 				revert
 				image="schedule"
-				title="Schedule"
+				title="Scheduling"
 				description="Scheduling feature are available and free up to 5 tasks. Save your time doing it over and over again"
 			/>
 			<CaptionRow
 				image="upload"
 				title="Upload to Google Drive"
-				description="Give us a folder name to put your downloaded statements, we will upload extracted attachments in to your Google drive."
+				description="Give us a folder name to put your downloaded statements, we will upload extracted attachments in to your Google Drive."
 			/>
 		</Box>
 	)
@@ -71,8 +77,8 @@ const CaptionRow = ({ image, title, description, revert }) => {
 			{(!revert || isMobile) && (
 				<Image
 					src={`/images/${image}.svg`}
-					width={240}
-					height={240}
+					width={220}
+					height={220}
 					alt="extract"
 				/>
 			)}
@@ -96,8 +102,8 @@ const CaptionRow = ({ image, title, description, revert }) => {
 			{revert && !isMobile && (
 				<Image
 					src={`/images/${image}.svg`}
-					width={240}
-					height={240}
+					width={220}
+					height={220}
 					alt="extract"
 				/>
 			)}
