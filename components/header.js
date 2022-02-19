@@ -29,6 +29,14 @@ const Header = () => {
 
 	const [isLoggingIn, setIsLoggingIn] = React.useState(false)
 
+	const headerMenu = React.useMemo(
+		() =>
+			isLoggedIn
+				? Object.values(MENU)
+				: Object.values(MENU).filter(menu => !menu.isAuth),
+		[isLoggedIn]
+	)
+
 	const onLogin = React.useCallback(async () => {
 		setIsLoggingIn(true)
 		rememberRoute(window.location.pathname)
@@ -63,7 +71,7 @@ const Header = () => {
 			>
 				<Logo size="s" onlyLogo={isMobile} />
 				<List sx={{ display: 'inline-flex', py: 0, height: '100%', ml: 2 }}>
-					{Object.values(MENU).map(({ label, link }) => (
+					{headerMenu.map(({ label, link }) => (
 						<Link href={link} passHref key={label}>
 							<Tooltip title={isMobile ? capitalize(label) : ''}>
 								<ListItem button>

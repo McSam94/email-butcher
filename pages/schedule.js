@@ -357,6 +357,12 @@ const Schedule = () => {
 		if (hasDeletedJob || hasCreatedJob || hasEditedJob) getJobs()
 	}, [hasDeletedJob, hasCreatedJob, hasEditedJob, getJobs])
 
+	React.useEffect(() => {
+		if (!isLoggedIn) push('/')
+	}, [isLoggedIn, push])
+
+	if (!isLoggedIn) return null
+
 	return (
 		<>
 			<Head>
