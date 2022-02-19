@@ -12,12 +12,17 @@ const Coffee = () => {
 
 	return (
 		<Box
-			sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+			sx={{
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'center',
+				my: 8,
+			}}
 		>
 			<Typography
 				variant="h4"
 				fontWeight="bold"
-				color="secondary"
+				color="secondary.light"
 				sx={{ mb: 2 }}
 			>
 				Like our work?

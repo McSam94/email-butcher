@@ -17,10 +17,10 @@ const About = () => {
 			}}
 		>
 			<Typography
-				variant="h4"
-				color="secondary"
+				variant="h3"
+				color="secondary.light"
 				fontWeight="bold"
-				sx={{ mb: 4 }}
+				sx={{ my: 12 }}
 			>
 				Meet Email Butcher
 			</Typography>

@@ -4,7 +4,7 @@ import Logo from '@/components/logo'
 
 const Landing = () => {
 	return (
-		<Box sx={{ maxWidth: '480px', alignSelf: 'center' }}>
+		<Box sx={{ maxWidth: '480px', alignSelf: 'center', my: 8 }}>
 			<Logo size="l" />
 			<Typography
 				variant="h6"

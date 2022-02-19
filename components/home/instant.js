@@ -108,7 +108,12 @@ const Instant = () => {
 
 	return (
 		<Box sx={{ maxWidth: '420px', alignSelf: 'center' }}>
-			<Typography variant="h4" color="primary" fontWeight="bold" sx={{ mb: 4 }}>
+			<Typography
+				variant="h4"
+				color="secondary.light"
+				fontWeight="bold"
+				sx={{ my: 8 }}
+			>
 				Let&apos;s Begin!
 			</Typography>
 			<form onSubmit={handleSubmit(onSubmit)}>
