@@ -1,10 +1,11 @@
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import * as React from 'react'
 import { useAuthStore } from '@/store/auth'
 import { useUiStore } from '@/store/ui'
 import TOAST from '@/constants/toast'
 import { useRouter } from 'next/router'
 import useAuthReadyEffect from '@/hooks/useAuthReadyEffect'
+import Image from 'next/image'
 
 const Loading = () => {
 	const { push, query } = useRouter()
@@ -21,6 +22,8 @@ const Loading = () => {
 		previousRoute,
 	} = useAuthStore()
 	const { toast } = useUiStore()
+
+	const [loadingDotCount, setLoadingDotCount] = React.useState(0)
 
 	useAuthReadyEffect(() => {
 		const code = query?.code
@@ -77,7 +80,52 @@ const Loading = () => {
 		}
 	}, [updateTokenError, toast, resetUpdateToken, push, previousRoute])
 
-	return <Box>Loading...</Box>
+	React.useEffect(() => {
+		const animationInterval = setInterval(
+			() =>
+				setLoadingDotCount(prevState => {
+					if (prevState === 3) return 0
+
+					return prevState + 1
+				}),
+			500
+		)
+
+		return () => clearInterval(animationInterval)
+	}, [])
+
+	return (
+		<Box
+			sx={{
+				width: '100vw',
+				height: '100vh',
+				display: 'flex',
+				flexDirection: 'column',
+				justifyContent: 'center',
+				alignItems: 'center',
+			}}
+		>
+			<Image src="/images/loading.svg" width={500} height={500} alt="loading" />
+			<Box
+				sx={{
+					display: 'flex',
+					flexDirection: 'row',
+					justifyContent: 'center',
+				}}
+			>
+				<Typography variant="h5" color="primary.light">
+					Hold on a tight
+				</Typography>
+				<Typography
+					variant="h5"
+					color="primary.light"
+					sx={{ width: 50, ml: 1 }}
+				>
+					{[...new Array(loadingDotCount)].map(() => '.')}
+				</Typography>
+			</Box>
+		</Box>
+	)
 }
 
 export default Loading

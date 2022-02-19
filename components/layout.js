@@ -7,8 +7,12 @@ import Config from '@/constants/config'
 import { Box } from '@mui/material'
 import ApiUtils from '@/services/index'
 import Footer from './footer'
+import { useRouter } from 'next/router'
+
+const LAYOUT_BLACKLIST = ['/redirect']
 
 const Layout = ({ children }) => {
+	const { route } = useRouter()
 	const { isReady, logout } = useAuthStore()
 
 	if (!isReady) {
@@ -16,6 +20,8 @@ const Layout = ({ children }) => {
 		initUiState()
 		ApiUtils.injectLogout(logout)
 	}
+
+	if (LAYOUT_BLACKLIST.includes(route)) return <>{children}</>
 
 	return (
 		<>
